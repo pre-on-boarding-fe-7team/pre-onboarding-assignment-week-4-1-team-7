@@ -9,5 +9,7 @@ const api = axios.create({
 });
 
 const getUsers = async () => await api.get('/users');
+const getAccounts = async () => await api.get('/accounts');
+const getUserSettings = async () => await api.get('/userSetting');
 
-export { getUsers };
+export { getUsers, getAccounts, getUserSettings };
