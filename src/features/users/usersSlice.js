@@ -1,10 +1,34 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getUsers } from '../../api/api';
+import { getAccounts, getUsers, getUserSettings } from '../../api/api';
 import { API_STATUS } from '../../common/utils/constant';
 
 export const fetchUsersList = createAsyncThunk('users/getUsersList', async () => {
-  const response = await getUsers();
-  return response.data;
+  try {
+    const [users, accounts, userSettings] = await Promise.allSettled([
+      getUsers(),
+      getAccounts(),
+      getUserSettings(),
+    ]);
+    users.value.data.pop();
+    const userOwnAccountNum = Array.from({ length: 100 }, () => 0);
+    for (const value of accounts.value.data) {
+      userOwnAccountNum[value.user_id - 1] += 1;
+    }
+
+    const userList = users.value.data.map((user, idx) => {
+      return {
+        ...user,
+        userOwnAccountNum: userOwnAccountNum[idx],
+        allow_marketing_push: userSettings.value.data[idx].allow_marketing_push,
+        is_active: userSettings.value.data[idx].is_active,
+        is_staff: userSettings.value.data[idx].is_staff,
+      };
+    });
+
+    return userList;
+  } catch (e) {
+    throw new Error(e);
+  }
 });
 
 const initialState = {
@@ -28,8 +52,5 @@ export const usersSlice = createSlice({
     });
   },
 });
-
-// Action creators are generated for each case reducer function
-// export const {} = usersSlice.actions;
 
 export default usersSlice.reducer;
