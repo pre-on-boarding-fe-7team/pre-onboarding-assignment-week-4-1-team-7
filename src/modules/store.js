@@ -5,7 +5,7 @@ import accountSlice from './accountSlice';
 const store = configureStore({
   reducer: {
     users: userSlice.reducer,
-    assert: accountSlice.reducer,
+    assert: accountSlice,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(logger),
 });
