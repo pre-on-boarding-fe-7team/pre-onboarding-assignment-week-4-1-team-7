@@ -1,14 +1,14 @@
-const baseUrl = process.env.REACT_APP_SERVER_URL;
+import axios from 'axios';
 
-const get = async endpoint => {
-  const url = baseUrl + endpoint;
-  const res = await fetch(url);
-  if (!res.ok) {
-    throw new Error(`${res.status.toString()} Error 인한 요청 실패!`);
-  }
-  const result = await res.json();
+const token = process.env.REACT_APP_TOKEN;
 
-  return result;
+const api = axios.create({
+  headers: {
+    Authorization: `Bearer ${token}`,
+  },
+});
+
+export const getUsersApi = async () => {
+  const response = await api.get(`/users`);
+  return response.data;
 };
-
-export { get };
