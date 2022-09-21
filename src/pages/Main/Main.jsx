@@ -7,7 +7,7 @@ import { Container, Item } from './Main.style';
 // mui tutorial
 function Main() {
   return (
-    <Container maxWidth={"1000px"} sx={{ flexGrow: 1 }}>
+    <Container maxWidth={'1000px'} sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid xs={8}>
           <Item>xs=8</Item>
@@ -23,10 +23,10 @@ function Main() {
         </Grid>
       </Grid>
       <Stack spacing={2} direction="row">
-      <Button variant="text">Text</Button>
-      <Button variant="contained">Contained</Button>
-      <Button variant="outlined">Outlined</Button>
-    </Stack>
+        <Button variant="text">Text</Button>
+        <Button variant="contained">Contained</Button>
+        <Button variant="outlined">Outlined</Button>
+      </Stack>
     </Container>
   );
 }
