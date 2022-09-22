@@ -8,6 +8,7 @@ export const API_STATUS = {
   LOADING: 'Loading',
   SUCCESS: 'Success',
   FAILED: 'Failed',
+  SERACH_LOADING: 'SearchLoading',
 };
 
 export const FILTERING_TYPE = {
