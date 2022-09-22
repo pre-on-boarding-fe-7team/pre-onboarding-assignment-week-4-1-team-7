@@ -1,9 +1,8 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { apiservice } from '..';
-//index에서 생성한 인스턴스를 export해오고 여기서 import로 가져온다
 
-const getUsersFetch = createAsyncThunk('userSlice/getUsersFetch', async () => {
-  return await apiservice.getUsersApi();
+const getUsersFetch = createAsyncThunk('userSlice/getUsersFetch', async (page, limit) => {
+  return await apiservice.getUsersApi(page, limit);
 });
 
 const userSlice = createSlice({
@@ -11,14 +10,16 @@ const userSlice = createSlice({
   initialState: {
     users: null,
     user: null,
-    status: 'Hello',
+    total: null,
+    status: 'Loading',
   },
   extraReducers: builder => {
     builder.addCase(getUsersFetch.pending, (state, action) => {
       state.status = 'Loading';
     });
     builder.addCase(getUsersFetch.fulfilled, (state, action) => {
-      state.users = action.payload;
+      state.users = action.payload.data;
+      state.total = action.payload.total;
       // state.status = 'complete';
     });
     builder.addCase(getUsersFetch.rejected, (state, action) => {

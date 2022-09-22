@@ -20,6 +20,10 @@ const Users = ({ token }) => {
   const status = useSelector(state => {
     return state.users.status;
   });
+  const total = useSelector(state => {
+    console.info(state);
+    return state.users.total;
+  });
 
   // 토큰 없다면 /login로 리다이렉트
   useEffect(() => {
@@ -35,7 +39,7 @@ const Users = ({ token }) => {
   }, [dispatch, setSearchParams, page, limit]);
 
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil((users?.length * 10) / 10); i++) {
+  for (let i = 1; i <= Math.ceil((total - 1) / 10); i++) {
     pageNumbers.push(i);
   }
 

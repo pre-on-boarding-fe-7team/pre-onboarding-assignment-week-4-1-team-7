@@ -10,13 +10,17 @@ class ApiService {
     return `Bearer ${token}`;
   }
 
-  async getUsersApi() {
+  async getUsersApi(page = 1, limit = 10) {
     const response = await axios.get(`/users`, {
       headers: {
         Authorization: this.getHeaders(),
       },
+      params: {
+        _page: page,
+        _limit: limit,
+      },
     });
-    return response.data;
+    return { data: response.data, total: response.headers['x-total-count'] };
   }
 }
 
