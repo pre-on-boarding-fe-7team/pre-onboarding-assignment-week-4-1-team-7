@@ -1,12 +1,21 @@
+import axios from 'axios';
+
 class ApiService {
-  //TODO: 토큰 추가
-  constructor(tokenStorage, httpClient) {
+  constructor(tokenStorage) {
     this.tokenStorage = tokenStorage;
-    this.axios = httpClient;
+  }
+
+  getHeaders() {
+    const token = this.tokenStorage.getToken();
+    return `Bearer ${token}`;
   }
 
   async getUsersApi() {
-    const response = await this.axios.get('/users');
+    const response = await axios.get(`/users`, {
+      headers: {
+        Authorization: this.getHeaders(),
+      },
+    });
     return response.data;
   }
 }

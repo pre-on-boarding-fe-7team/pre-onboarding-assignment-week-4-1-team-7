@@ -8,18 +8,12 @@ import { Provider } from 'react-redux';
 import store from './modules/store';
 import TokenStorage from './common/utils/token';
 import Auth from './common/utils/auth';
-import axios from 'axios';
 import ApiService from './api/api';
 import { GlobalStyle } from './styles/global-styles';
 
-const httpClient = axios.create({
-  headers: {
-    Authorization: `Bearer ${process.env.REACT_APP_TOKEN}`,
-  },
-});
 const tokenStorage = new TokenStorage();
-const auth = new Auth(tokenStorage, httpClient);
-export const apiservice = new ApiService(tokenStorage, httpClient);
+const auth = new Auth(tokenStorage);
+export const apiservice = new ApiService(tokenStorage);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(

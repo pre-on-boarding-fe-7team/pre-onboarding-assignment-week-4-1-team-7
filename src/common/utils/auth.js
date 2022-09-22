@@ -1,11 +1,12 @@
+import axios from 'axios';
+
 class Auth {
-  constructor(tokenStorage, httpClient) {
+  constructor(tokenStorage) {
     this.tokenStorage = tokenStorage;
-    this.axios = httpClient;
   }
 
   async signIn(email, password) {
-    const response = await this.axios.post(`/login`, {
+    const response = await axios.post(`/login`, {
       email,
       password,
     });
