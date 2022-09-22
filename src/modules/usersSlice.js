@@ -1,6 +1,7 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getAccounts, getUsers, getUserSettings } from '../api/api';
+import { getAccounts, getUsers, getUserSettings, searchUsersList } from '../api/api';
 import { API_STATUS } from '../common/utils/constant';
+import { convertDate, maskingName, maskingPhonNumber } from '../common/utils/utils';
 
 export const fetchUsersList = createAsyncThunk('users/getUsersList', async () => {
   try {
@@ -18,6 +19,11 @@ export const fetchUsersList = createAsyncThunk('users/getUsersList', async () =>
     const userList = users.value.data.map((user, idx) => {
       return {
         ...user,
+        name: maskingName(user.name),
+        birth_date: convertDate(user.birth_date),
+        phone_number: maskingPhonNumber(user.phone_number),
+        last_login: convertDate(user.last_login),
+        created_at: convertDate(user.created_at),
         userOwnAccountNum: userOwnAccountNum[idx],
         allow_marketing_push: userSettings.value.data[idx].allow_marketing_push,
         is_active: userSettings.value.data[idx].is_active,
@@ -31,8 +37,20 @@ export const fetchUsersList = createAsyncThunk('users/getUsersList', async () =>
   }
 });
 
+export const fetchSearchUsersList = createAsyncThunk('users/searchUsersList', async name => {
+  try {
+    console.info('name: ', name);
+    const result = await searchUsersList(name);
+    console.info(result);
+    return result.data;
+  } catch (e) {
+    throw new Error(e);
+  }
+});
+
 const initialState = {
   users: [],
+  searchedUsers: [],
   status: API_STATUS.LOADING,
 };
 
@@ -48,6 +66,16 @@ export const usersSlice = createSlice({
       state.status = API_STATUS.SUCCESS;
     });
     builder.addCase(fetchUsersList.rejected, (state, action) => {
+      state.status = API_STATUS.FAILED;
+    });
+    builder.addCase(fetchSearchUsersList.pending, (state, action) => {
+      state.status = API_STATUS.LOADING;
+    });
+    builder.addCase(fetchSearchUsersList.fulfilled, (state, action) => {
+      state.searchedUsers = action.payload;
+      state.status = API_STATUS.SUCCESS;
+    });
+    builder.addCase(fetchSearchUsersList.rejected, (state, action) => {
       state.status = API_STATUS.FAILED;
     });
   },

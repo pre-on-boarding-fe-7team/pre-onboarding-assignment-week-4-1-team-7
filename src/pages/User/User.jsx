@@ -1,9 +1,8 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchUsersList } from '../../modules/usersSlice';
+import { fetchSearchUsersList, fetchUsersList } from '../../modules/usersSlice';
 import { API_STATUS, FILTERING_TYPE, ROUTE } from '../../common/utils/constant';
-import { convertDate, maskingName, maskingPhonNumber } from '../../common/utils/utils';
 
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
@@ -27,15 +26,16 @@ function User() {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const { users, status } = useSelector(state => state.usersReducer);
-
+  const { users, searchedUsers, status } = useSelector(state => state.usersReducer);
+  console.info(searchedUsers);
   const [filteringType, setFilteringType] = useState(FILTERING_TYPE.NONE);
   const [filteredUsers, setFilteredUsers] = useState([]);
 
   const [searchValue, setSearchValue] = useState('');
 
-  const handleSubmitSearchValue = e => {
+  const handleSubmitSearchValue = async e => {
     e.preventDefault();
+    await dispatch(fetchSearchUsersList(searchValue)).unwrap();
     navigate({
       pathname: ROUTE.USER,
       search: `?search=${searchValue}`,
@@ -142,15 +142,15 @@ function User() {
               <Item>고객명</Item>
               <ul>
                 {users.map(user => (
-                  <li key={user.uuid}>{maskingName(user.name)}</li>
+                  <li key={user.uuid}>{user.name}</li>
                 ))}
               </ul>
             </Grid>
             <Grid item xs={1}>
               <Item>계좌 수</Item>
               <ul>
-                {users.map((user, idx) => (
-                  <li key={idx}>{user.userOwnAccountNum}</li>
+                {users.map(user => (
+                  <li key={user.uuid}>{user.userOwnAccountNum}</li>
                 ))}
               </ul>
             </Grid>
@@ -174,7 +174,7 @@ function User() {
               <Item>생년월일</Item>
               <ul>
                 {users?.map(user => {
-                  return <li key={user.uuid}>{convertDate(user.birth_date)}</li>;
+                  return <li key={user.uuid}>{user.birth_date}</li>;
                 })}
               </ul>
             </Grid>
@@ -182,7 +182,7 @@ function User() {
               <Item>번호</Item>
               <ul>
                 {users.map(user => (
-                  <li key={user.uuid}>{maskingPhonNumber(user.phone_number)}</li>
+                  <li key={user.uuid}>{user.phone_number}</li>
                 ))}
               </ul>
             </Grid>
@@ -190,23 +190,23 @@ function User() {
               <Item>최근 로그인</Item>
               <ul>
                 {users.map(user => (
-                  <li key={user.uuid}>{convertDate(user.last_login)}</li>
+                  <li key={user.uuid}>{user.last_login}</li>
                 ))}
               </ul>
             </Grid>
             <Grid item xs={1}>
               <Item>수신 동의 여부</Item>
               <ul>
-                {users.map(setting => (
-                  <li key={setting.uuid}>{String(setting.allow_marketing_push)}</li>
+                {users.map(user => (
+                  <li key={user.uuid}>{String(user.allow_marketing_push)}</li>
                 ))}
               </ul>
             </Grid>
             <Grid item xs={1}>
               <Item>활성화 여부</Item>
               <ul>
-                {users.map(setting => (
-                  <li key={setting.uuid}>{String(setting.is_active)}</li>
+                {users.map(user => (
+                  <li key={user.uuid}>{String(user.is_active)}</li>
                 ))}
               </ul>
             </Grid>
@@ -214,7 +214,7 @@ function User() {
               <Item>가입일</Item>
               <ul>
                 {users.map(user => (
-                  <li key={user.uuid}>{convertDate(user.created_at)}</li>
+                  <li key={user.uuid}>{user.created_at}</li>
                 ))}
               </ul>
             </Grid>
@@ -227,7 +227,7 @@ function User() {
               <Item>고객명</Item>
               <ul>
                 {filteredUsers?.map(user => (
-                  <li key={user.uuid}>{maskingName(user.name)}</li>
+                  <li key={user.uuid}>{user.name}</li>
                 ))}
               </ul>
             </Grid>
@@ -235,7 +235,7 @@ function User() {
               <Item>계좌 수</Item>
               <ul>
                 {filteredUsers?.map((user, idx) => (
-                  <li key={idx}>{user.userOwnAccountNum}</li>
+                  <li key={user.uuid}>{user.userOwnAccountNum}</li>
                 ))}
               </ul>
             </Grid>
@@ -259,7 +259,7 @@ function User() {
               <Item>생년월일</Item>
               <ul>
                 {filteredUsers?.map(user => {
-                  return <li key={user.uuid}>{convertDate(user.birth_date)}</li>;
+                  return <li key={user.uuid}>{user.birth_date}</li>;
                 })}
               </ul>
             </Grid>
@@ -267,7 +267,7 @@ function User() {
               <Item>번호</Item>
               <ul>
                 {filteredUsers?.map(user => (
-                  <li key={user.uuid}>{maskingPhonNumber(user.phone_number)}</li>
+                  <li key={user.uuid}>{user.phone_number}</li>
                 ))}
               </ul>
             </Grid>
@@ -275,23 +275,23 @@ function User() {
               <Item>최근 로그인</Item>
               <ul>
                 {filteredUsers?.map(user => (
-                  <li key={user.uuid}>{convertDate(user.last_login)}</li>
+                  <li key={user.uuid}>{user.last_login}</li>
                 ))}
               </ul>
             </Grid>
             <Grid item xs={1}>
               <Item>수신 동의 여부</Item>
               <ul>
-                {filteredUsers?.map(setting => (
-                  <li key={setting.uuid}>{String(setting.allow_marketing_push)}</li>
+                {filteredUsers?.map(user => (
+                  <li key={user.uuid}>{String(user.allow_marketing_push)}</li>
                 ))}
               </ul>
             </Grid>
             <Grid item xs={1}>
               <Item>활성화 여부</Item>
               <ul>
-                {filteredUsers?.map(setting => (
-                  <li key={setting.uuid}>{String(setting.is_active)}</li>
+                {filteredUsers?.map(user => (
+                  <li key={user.uuid}>{String(user.is_active)}</li>
                 ))}
               </ul>
             </Grid>
@@ -299,7 +299,7 @@ function User() {
               <Item>가입일</Item>
               <ul>
                 {filteredUsers?.map(user => (
-                  <li key={user.uuid}>{convertDate(user.created_at)}</li>
+                  <li key={user.uuid}>{user.created_at}</li>
                 ))}
               </ul>
             </Grid>
