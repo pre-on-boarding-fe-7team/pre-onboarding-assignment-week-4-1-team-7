@@ -1,13 +1,12 @@
 import { Box, Card, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
-import useAxios from '../../../common/hooks/useAxios';
 import { boolToIcon, makeGetUserName } from '../../../common/utils/field.util';
-import { getUsersApi } from '../../../api/api';
 import Loading from '../../../components/Loading/Loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { useSearchParams } from 'react-router-dom';
 import { fetchAccounts } from '../../../modules/accountsSlice';
 import AccountPagination from '../AccountPagination';
+import { getUsersFetch } from '../../../modules/userSlice';
 
 const header = [
   'user_name',
@@ -24,8 +23,10 @@ const header = [
 const AccountList = () => {
   const dispatch = useDispatch();
   const accounts = useSelector(state => state.accounts);
-  const users = useAxios(getUsersApi);
-  const getUserName = makeGetUserName(users.data);
+  const users = useSelector(state => state.users.users);
+  const getUserName = makeGetUserName(users);
+
+  // TODO customHook ???
   const [searchParams] = useSearchParams();
   const _page = Number.parseInt(searchParams.get('page') || 1);
   const q = searchParams.get('q');
@@ -33,17 +34,20 @@ const AccountList = () => {
   const is_active = searchParams.get('active');
 
   useEffect(() => {
+    dispatch(getUsersFetch());
+  }, [dispatch]);
+
+  useEffect(() => {
     dispatch(fetchAccounts({ _page, q, broker_id, is_active }));
   }, [dispatch, _page, q, broker_id, is_active]);
 
-  if (accounts.loading || users.loading) return <Loading />;
-  if (accounts.error || users.error) return <p>에러</p>;
-  if (accounts.data && users.data)
+  if (accounts.loading) return <Loading />;
+  if (accounts.error) return <p>에러</p>;
+  if (accounts.data)
     return (
       <Box sx={{ mt: 3 }}>
         <Card>
-          {/* // <Box sx={{ minWidth: 1050, height: 400, overflowY: 'scroll' }}> */}
-          <Box sx={{ minWidth: 1050 }}>
+          <Box>
             <Table>
               <TableHead>
                 <TableRow>
