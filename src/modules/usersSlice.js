@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getAccounts, getUsers, getUserSettings, searchUsersList } from '../api/api';
-import { API_STATUS } from '../common/utils/constant';
+import { API_STATUS, ACTIVE_TYPE } from '../common/utils/constant';
 import { convertDate, maskingName, maskingPhonNumber } from '../common/utils/utils';
 
 export const fetchUsersList = createAsyncThunk('users/getUsersList', async () => {
@@ -11,7 +11,7 @@ export const fetchUsersList = createAsyncThunk('users/getUsersList', async () =>
       getUserSettings(),
     ]);
     users.value.data.pop();
-    const userOwnAccountNum = Array.from({ length: 100 }, () => 0);
+    const userOwnAccountNum = Array.from({ length: users.value.data.length }, () => 0);
     for (const value of accounts.value.data) {
       userOwnAccountNum[value.user_id - 1] += 1;
     }
@@ -25,9 +25,15 @@ export const fetchUsersList = createAsyncThunk('users/getUsersList', async () =>
         last_login: convertDate(user.last_login),
         created_at: convertDate(user.created_at),
         userOwnAccountNum: userOwnAccountNum[idx],
-        allow_marketing_push: userSettings.value.data[idx].allow_marketing_push ? 'O' : 'X',
-        is_active: userSettings.value.data[idx].is_active ? 'O' : 'X',
-        is_staff: userSettings.value.data[idx].is_staff,
+        allow_marketing_push: userSettings.value.data[idx].allow_marketing_push
+          ? ACTIVE_TYPE.ALLOW_MARKETING_PUSH
+          : ACTIVE_TYPE.NONE_ALLOW_MARKETING_PUSH,
+        is_active: userSettings.value.data[idx].is_active
+          ? ACTIVE_TYPE.ACTIVE
+          : ACTIVE_TYPE.NONE_ACTIVE,
+        is_staff: userSettings.value.data[idx].is_staff
+          ? ACTIVE_TYPE.STAFF
+          : ACTIVE_TYPE.NONE_STAFF,
       };
     });
 
@@ -39,8 +45,37 @@ export const fetchUsersList = createAsyncThunk('users/getUsersList', async () =>
 
 export const fetchSearchUsersList = createAsyncThunk('users/searchUsersList', async name => {
   try {
-    const result = await searchUsersList(name);
-    return result.data;
+    const [users, accounts, userSettings] = await Promise.allSettled([
+      searchUsersList(name),
+      getAccounts(),
+      getUserSettings(),
+    ]);
+    users.value.data.pop();
+    const userOwnAccountNum = Array.from({ length: users.value.data.length }, () => 0);
+    for (const value of accounts.value.data) {
+      userOwnAccountNum[value.user_id - 1] += 1;
+    }
+    const userList = users.value.data.map((user, idx) => {
+      return {
+        ...user,
+        name: maskingName(user.name),
+        birth_date: convertDate(user.birth_date),
+        phone_number: maskingPhonNumber(user.phone_number),
+        last_login: convertDate(user.last_login),
+        created_at: convertDate(user.created_at),
+        userOwnAccountNum: userOwnAccountNum[idx],
+        allow_marketing_push: userSettings.value.data[idx].allow_marketing_push
+          ? ACTIVE_TYPE.ALLOW_MARKETING_PUSH
+          : ACTIVE_TYPE.NONE_ALLOW_MARKETING_PUSH,
+        is_active: userSettings.value.data[idx].is_active
+          ? ACTIVE_TYPE.ACTIVE
+          : ACTIVE_TYPE.NONE_ACTIVE,
+        is_staff: userSettings.value.data[idx].is_staff
+          ? ACTIVE_TYPE.STAFF
+          : ACTIVE_TYPE.NONE_STAFF,
+      };
+    });
+    return userList;
   } catch (e) {
     throw new Error(e);
   }
