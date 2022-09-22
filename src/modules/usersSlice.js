@@ -25,8 +25,8 @@ export const fetchUsersList = createAsyncThunk('users/getUsersList', async () =>
         last_login: convertDate(user.last_login),
         created_at: convertDate(user.created_at),
         userOwnAccountNum: userOwnAccountNum[idx],
-        allow_marketing_push: userSettings.value.data[idx].allow_marketing_push,
-        is_active: userSettings.value.data[idx].is_active,
+        allow_marketing_push: userSettings.value.data[idx].allow_marketing_push ? 'O' : 'X',
+        is_active: userSettings.value.data[idx].is_active ? 'O' : 'X',
         is_staff: userSettings.value.data[idx].is_staff,
       };
     });
@@ -39,9 +39,7 @@ export const fetchUsersList = createAsyncThunk('users/getUsersList', async () =>
 
 export const fetchSearchUsersList = createAsyncThunk('users/searchUsersList', async name => {
   try {
-    console.info('name: ', name);
     const result = await searchUsersList(name);
-    console.info(result);
     return result.data;
   } catch (e) {
     throw new Error(e);
@@ -69,7 +67,7 @@ export const usersSlice = createSlice({
       state.status = API_STATUS.FAILED;
     });
     builder.addCase(fetchSearchUsersList.pending, (state, action) => {
-      state.status = API_STATUS.LOADING;
+      state.status = API_STATUS.SERACH_LOADING;
     });
     builder.addCase(fetchSearchUsersList.fulfilled, (state, action) => {
       state.searchedUsers = action.payload;
