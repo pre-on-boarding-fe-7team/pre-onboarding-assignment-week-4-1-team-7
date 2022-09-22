@@ -40,8 +40,7 @@ function User() {
 
   const dispatch = useDispatch();
   const { users, searchedUsers, status } = useSelector(state => state.usersReducer);
-  console.info(users);
-  console.info(searchedUsers);
+
   const [filteringType, setFilteringType] = useState(FILTERING_TYPE.NONE);
   const [filteredUsers, setFilteredUsers] = useState([]);
 
@@ -49,31 +48,43 @@ function User() {
 
   const handleSubmitSearchValue = async e => {
     e.preventDefault();
-    await dispatch(fetchSearchUsersList(searchValue)).unwrap();
-    navigate({
-      pathname: ROUTE.USER,
-      search: `?search=${searchValue}`,
-    });
+    try {
+      await dispatch(fetchSearchUsersList(searchValue)).unwrap();
+      setFilteringType(FILTERING_TYPE.NONE);
+      navigate({
+        pathname: ROUTE.USER,
+        search: `?search=${searchValue}`,
+      });
+    } catch (e) {
+      throw new Error(e);
+    }
   };
+
   const handleChangeSearchValue = useCallback(({ target: { value } }) => {
     setSearchValue(value);
   }, []);
 
-  const activeFiltering = useCallback(() => {
-    setFilteredUsers(users.filter(user => user.is_active === true));
-  }, [users]);
+  const activeFiltering = useCallback(
+    isActive => {
+      if (searchedUsers.length === 0) {
+        setFilteredUsers(users.filter(user => user.is_active === isActive));
+      } else {
+        setFilteredUsers(filteredUsers.filter(user => user.is_active === isActive));
+      }
+    },
+    [filteredUsers, searchedUsers.length, users]
+  );
 
-  const noneActiveFiltering = useCallback(() => {
-    setFilteredUsers(users.filter(user => user.is_active === false));
-  }, [users]);
-
-  const staffFiltering = useCallback(() => {
-    setFilteredUsers(users.filter(user => user.is_staff === true));
-  }, [users]);
-
-  const noneStaffFiltering = useCallback(() => {
-    setFilteredUsers(users.filter(user => user.is_staff === false));
-  }, [users]);
+  const staffFiltering = useCallback(
+    isStaff => {
+      if (searchedUsers.length === 0) {
+        setFilteredUsers(users.filter(user => user.is_staff === isStaff));
+      } else {
+        setFilteredUsers(filteredUsers.filter(user => user.is_staff === isStaff));
+      }
+    },
+    [filteredUsers, searchedUsers.length, users]
+  );
 
   const handleChangeFiltering = ({ target: { value } }) => {
     setFilteringType(value);
@@ -86,28 +97,28 @@ function User() {
         });
         break;
       case FILTERING_TYPE.ACTIVE:
-        activeFiltering();
+        activeFiltering(FILTERING_TYPE.ACTIVE);
         navigate({
           pathname: ROUTE.USER,
           search: '?filter=active',
         });
         break;
       case FILTERING_TYPE.NONE_ACTIVE:
-        noneActiveFiltering();
+        activeFiltering(FILTERING_TYPE.NONE_ACTIVE);
         navigate({
           pathname: ROUTE.USER,
           search: '?filter=not-active',
         });
         break;
       case FILTERING_TYPE.STAFF:
-        staffFiltering();
+        staffFiltering(FILTERING_TYPE.STAFF);
         navigate({
           pathname: ROUTE.USER,
           search: '?filter=staff',
         });
         break;
       case FILTERING_TYPE.NONE_STAFF:
-        noneStaffFiltering();
+        staffFiltering(FILTERING_TYPE.NONE_STAFF);
         navigate({
           pathname: ROUTE.USER,
           search: '?filter=not-staff',
@@ -120,10 +131,18 @@ function User() {
 
   useEffect(() => {
     const getUserList = async () => {
-      await dispatch(fetchUsersList()).unwrap();
+      try {
+        await dispatch(fetchUsersList()).unwrap();
+      } catch (e) {
+        throw new Error(e);
+      }
     };
     getUserList();
   }, [dispatch]);
+
+  useEffect(() => {
+    setFilteredUsers(searchedUsers);
+  }, [searchedUsers]);
 
   return status === API_STATUS.LOADING ? (
     <div>Loading...</div>
@@ -131,11 +150,7 @@ function User() {
     <>
       <FormControl style={{ width: '200px' }}>
         <InputLabel>필터링</InputLabel>
-        <Select
-          labelId="demo-simple-select-label"
-          value={filteringType}
-          onChange={handleChangeFiltering}
-        >
+        <Select value={filteringType} onChange={handleChangeFiltering}>
           <MenuItem value={FILTERING_TYPE.NONE}>{FILTERING_TYPE.NONE}</MenuItem>
           <MenuItem value={FILTERING_TYPE.ACTIVE}>{FILTERING_TYPE.ACTIVE}</MenuItem>
           <MenuItem value={FILTERING_TYPE.NONE_ACTIVE}>{FILTERING_TYPE.NONE_ACTIVE}</MenuItem>
@@ -151,34 +166,30 @@ function User() {
       </form>
       {status === API_STATUS.SERACH_LOADING ? (
         <div>Loading...</div>
-      ) : filteringType === FILTERING_TYPE.NONE ? (
-        <Box minWidth={'1500px'}>
-          <Grid container>
-            {Object.entries(UserProperties).map(([key, value], index) => (
-              <Grid item xs={1}>
-                <Item key={key}>{value}</Item>
-                <ul>
-                  {users.map(user => (
-                    <li key={user.uuid}>{user[key]}</li>
-                  ))}
-                </ul>
-              </Grid>
-            ))}
-          </Grid>
-        </Box>
       ) : (
         <Box minWidth={'1500px'}>
           <Grid container>
-            {Object.entries(UserProperties).map(([key, value], index) => (
-              <Grid item xs={1}>
-                <Item key={key}>{value}</Item>
-                <ul>
-                  {filteredUsers.map(user => (
-                    <li key={user.uuid}>{user[key]}</li>
-                  ))}
-                </ul>
-              </Grid>
-            ))}
+            {filteredUsers.length === 0
+              ? Object.entries(UserProperties).map(([key, value], index) => (
+                  <Grid item xs={1} key={key}>
+                    <Item>{value}</Item>
+                    <ul>
+                      {users?.map(user => (
+                        <li key={user.uuid}>{user[key]}</li>
+                      ))}
+                    </ul>
+                  </Grid>
+                ))
+              : Object.entries(UserProperties).map(([key, value], index) => (
+                  <Grid item xs={1} key={key}>
+                    <Item>{value}</Item>
+                    <ul>
+                      {filteredUsers?.map(user => (
+                        <li key={user.uuid}>{user[key]}</li>
+                      ))}
+                    </ul>
+                  </Grid>
+                ))}
           </Grid>
         </Box>
       )}
