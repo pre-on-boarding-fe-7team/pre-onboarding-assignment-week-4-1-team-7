@@ -10,6 +10,7 @@ import TokenStorage from './common/utils/token';
 import Auth from './common/utils/auth';
 import axios from 'axios';
 import ApiService from './api/api';
+import { GlobalStyle } from './styles/global-styles';
 
 const httpClient = axios.create({
   headers: {
@@ -24,10 +25,11 @@ const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   // <React.StrictMode>
   <ThemeProvider theme={theme}>
+    <GlobalStyle />
     <CssBaseline />
     <BrowserRouter>
       <Provider store={store}>
-        <App auth={auth} />
+        <App auth={auth} token={tokenStorage} />
       </Provider>
     </BrowserRouter>
   </ThemeProvider>
