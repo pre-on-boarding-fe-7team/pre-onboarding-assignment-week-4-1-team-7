@@ -1,7 +1,7 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 import { getUsersApi } from '../api/api';
 
-const getUsersFetch = createAsyncThunk('userSlice/getUsersFetch', async () => {
+export const getUsersFetch = createAsyncThunk('userSlice/getUsersFetch', async () => {
   return await getUsersApi();
 });
 
@@ -26,5 +26,4 @@ const userSlice = createSlice({
   },
 });
 
-export default userSlice;
-export { getUsersFetch };
+export default userSlice.reducer;

@@ -4,7 +4,7 @@ import userSlice from './userSlice';
 import accountSlice from './accountSlice';
 const store = configureStore({
   reducer: {
-    users: userSlice.reducer,
+    users: userSlice,
     assert: accountSlice,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(logger),

@@ -5,7 +5,7 @@ export const getAccountFetch = createAsyncThunk('userSlice/getAccountFetch', asy
   return await getAccountsApi();
 });
 
-const userSlice = createSlice({
+const accountSlice = createSlice({
   name: 'userSlice',
   initialState: {
     account: [],
@@ -25,4 +25,4 @@ const userSlice = createSlice({
   },
 });
 
-export default userSlice.reducer;
+export default accountSlice.reducer;
