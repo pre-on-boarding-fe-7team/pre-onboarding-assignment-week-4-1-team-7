@@ -24,7 +24,7 @@ function Account() {
   }, [dispatch]);
 
   //고객 이름 필터링
-  const GetUserName = users => id => users.find(user => user.id === id).name;
+  const GetUserName = users => id => users?.find(user => user.id === id).name;
   const UserName = GetUserName(userNameList);
 
   //브로커 이름 필터링
@@ -32,7 +32,7 @@ function Account() {
   for (const id in broker) {
     Brokerlist.push({ id, name: broker[id] });
   }
-  const GetBrokerName = brokers => id => brokers.find(broker => broker.id === id).name;
+  const GetBrokerName = brokers => id => brokers?.find(broker => broker.id === id).name;
   const BrokerName = GetBrokerName(Brokerlist);
 
   //계좌 상태 필터링
@@ -40,7 +40,7 @@ function Account() {
   for (const id in getstatus) {
     AccountStatus.push({ id, name: getstatus[id] });
   }
-  const GetAccountStatus = getsta => id => getsta.find(statu => statu.name === id).id;
+  const GetAccountStatus = getsta => id => getsta?.find(statu => statu.name === id).id;
   const StatusName = GetAccountStatus(AccountStatus);
   console.info(Brokerlist);
   console.info(AccountStatus);
