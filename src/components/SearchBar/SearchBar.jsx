@@ -8,8 +8,8 @@ import {
   Typography,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { useState } from 'react';
 import { jsonToArray } from '../../common/utils/field.util';
+import { useSearchParams } from 'react-router-dom';
 
 const brokerList = jsonToArray({
   209: '유안타증권',
@@ -40,14 +40,16 @@ const brokerList = jsonToArray({
 });
 
 const SearchBar = ({ title, onSearch }) => {
-  const [query, setQuery] = useState('');
-  const changeHandler = e => {
-    setQuery(e.target.value);
-  };
-  const searchHandler = ({ key }) => {
+  const [searchParams, setSearchParams] = useSearchParams();
+  //   const changeHandler = e => {
+  //     setQuery(e.target.value);
+  //   };
+  const broker_id = searchParams.get('broker');
+  const is_active = searchParams.get('active');
+  const searchHandler = ({ target: { value }, key }) => {
     if (key !== 'Enter') return;
 
-    onSearch(query);
+    setSearchParams({ page: 1, q: value, broker_id, is_active });
   };
 
   return (
@@ -82,8 +84,8 @@ const SearchBar = ({ title, onSearch }) => {
                 }}
                 variant="outlined"
                 onKeyDown={searchHandler}
-                onChange={changeHandler}
-                value={query}
+                // onChange={changeHandler}
+                // value={query}
               />
               <TextField
                 fullWidth
