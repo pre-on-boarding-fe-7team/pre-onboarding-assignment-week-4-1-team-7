@@ -23,8 +23,7 @@ const header = [
 const AccountList = () => {
   const dispatch = useDispatch();
   const accounts = useSelector(state => state.accounts);
-  const users = useSelector(state => state.users.users);
-  const getUserName = makeGetUserName(users);
+  const users = useSelector(state => state.users);
 
   // TODO customHook ???
   const [searchParams] = useSearchParams();
@@ -41,9 +40,10 @@ const AccountList = () => {
     dispatch(fetchAccounts({ _page, q, broker_id, is_active }));
   }, [dispatch, _page, q, broker_id, is_active]);
 
+  // TODO users.status = success
   if (accounts.loading) return <Loading />;
   if (accounts.error) return <p>에러</p>;
-  if (accounts.data)
+  if (accounts.data && users.users)
     return (
       <Box sx={{ mt: 3 }}>
         <Card>
@@ -59,7 +59,7 @@ const AccountList = () => {
               <TableBody>
                 {accounts.data.data.map(account => (
                   <TableRow key={account.uuid}>
-                    <TableCell>{getUserName(account.id)}</TableCell>
+                    <TableCell>{makeGetUserName(users.users)(account.id)}</TableCell>
                     <TableCell>{account.broker_id}</TableCell>
                     <TableCell>{account.number}</TableCell>
                     <TableCell>{account.status}</TableCell>
