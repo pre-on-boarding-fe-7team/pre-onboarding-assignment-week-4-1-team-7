@@ -1,14 +1,14 @@
-import axios from 'axios';
+class ApiService {
+  //TODO: 토큰 추가
+  constructor(tokenStorage, httpClient) {
+    this.tokenStorage = tokenStorage;
+    this.axios = httpClient;
+  }
 
-const token = process.env.REACT_APP_TOKEN;
+  async getUsersApi() {
+    const response = await this.axios.get('/users');
+    return response.data;
+  }
+}
 
-const api = axios.create({
-  headers: {
-    Authorization: `Bearer ${token}`,
-  },
-});
-
-export const getUsersApi = async () => {
-  const response = await api.get(`/users`);
-  return response.data;
-};
+export default ApiService;

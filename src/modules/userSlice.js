@@ -1,8 +1,9 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getUsersApi } from '../api/api';
+import { apiservice } from '..';
+//index에서 생성한 인스턴스를 export해오고 여기서 import로 가져온다
 
 const getUsersFetch = createAsyncThunk('userSlice/getUsersFetch', async () => {
-  return await getUsersApi();
+  return await apiservice.getUsersApi();
 });
 
 const userSlice = createSlice({
