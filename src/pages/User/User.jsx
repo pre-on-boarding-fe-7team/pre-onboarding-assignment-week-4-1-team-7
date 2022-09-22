@@ -1,17 +1,19 @@
 import React, { useCallback, useEffect, useState } from 'react';
 import { styled } from '@mui/material/styles';
+import { useDispatch, useSelector } from 'react-redux';
+import { fetchUsersList } from '../../modules/usersSlice';
+import { API_STATUS, FILTERING_TYPE, ROUTE } from '../../common/utils/constant';
+import { convertDate, maskingName, maskingPhonNumber } from '../../common/utils/utils';
+
 import Box from '@mui/material/Box';
 import Paper from '@mui/material/Paper';
 import Grid from '@mui/material/Grid';
-import { useDispatch, useSelector } from 'react-redux';
-import { fetchUsersList } from '../../features/users/usersSlice';
-import { API_STATUS, FILTERING_TYPE } from '../../common/utils/constant';
-import { convertDate, maskingName, maskingPhonNumber } from '../../common/utils/utils';
-
 import InputLabel from '@mui/material/InputLabel';
 import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
+import Input from '@mui/material/Input';
+import { useNavigate } from 'react-router-dom';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -22,11 +24,26 @@ const Item = styled(Paper)(({ theme }) => ({
 }));
 
 function User() {
+  const navigate = useNavigate();
+
   const dispatch = useDispatch();
   const { users, status } = useSelector(state => state.usersReducer);
 
   const [filteringType, setFilteringType] = useState(FILTERING_TYPE.NONE);
   const [filteredUsers, setFilteredUsers] = useState([]);
+
+  const [searchValue, setSearchValue] = useState('');
+
+  const handleSubmitSearchValue = e => {
+    e.preventDefault();
+    navigate({
+      pathname: ROUTE.USER,
+      search: `?search=${searchValue}`,
+    });
+  };
+  const handleChangeSearchValue = useCallback(({ target: { value } }) => {
+    setSearchValue(value);
+  }, []);
 
   const activeFiltering = useCallback(() => {
     setFilteredUsers(users.filter(user => user.is_active === true));
@@ -46,20 +63,41 @@ function User() {
 
   const handleChangeFiltering = ({ target: { value } }) => {
     setFilteringType(value);
+
     switch (value) {
       case FILTERING_TYPE.NONE:
+        navigate({
+          pathname: ROUTE.USER,
+          search: '',
+        });
         break;
       case FILTERING_TYPE.ACTIVE:
         activeFiltering();
+        navigate({
+          pathname: ROUTE.USER,
+          search: '?filter=active',
+        });
         break;
       case FILTERING_TYPE.NONE_ACTIVE:
         noneActiveFiltering();
+        navigate({
+          pathname: ROUTE.USER,
+          search: '?filter=not-active',
+        });
         break;
       case FILTERING_TYPE.STAFF:
         staffFiltering();
+        navigate({
+          pathname: ROUTE.USER,
+          search: '?filter=staff',
+        });
         break;
       case FILTERING_TYPE.NONE_STAFF:
         noneStaffFiltering();
+        navigate({
+          pathname: ROUTE.USER,
+          search: '?filter=not-staff',
+        });
         break;
       default:
         break;
@@ -91,6 +129,12 @@ function User() {
           <MenuItem value={FILTERING_TYPE.NONE_STAFF}>{FILTERING_TYPE.NONE_STAFF}</MenuItem>
         </Select>
       </FormControl>
+      <form onSubmit={handleSubmitSearchValue}>
+        <FormControl style={{ width: '200px' }}>
+          <InputLabel>검색</InputLabel>
+          <Input id="search" value={searchValue} onChange={handleChangeSearchValue} />
+        </FormControl>
+      </form>
       {filteringType === FILTERING_TYPE.NONE ? (
         <Box minWidth={'1500px'}>
           <Grid container>
