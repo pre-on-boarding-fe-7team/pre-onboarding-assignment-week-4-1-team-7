@@ -9,8 +9,8 @@ function App({ auth, token }) {
   return (
     <Routes>
       <Route path={ROUTE.MAIN} element={<Main />} />
-      <Route path="/login" element={<Login auth={auth} token={token} />} />
-      <Route path="/users" element={<Users token={token} />} />
+      <Route path={ROUTE.LOGIN} element={<Login auth={auth} token={token} />} />
+      <Route path={ROUTE.USERS} element={<Users token={token} />} />
       <Route path={ROUTE.NOT_FOUND} element={<NotFound />} />
     </Routes>
   );
