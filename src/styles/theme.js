@@ -1,4 +1,3 @@
-
 import { red } from '@mui/material/colors';
 import { createTheme } from '@mui/material/styles';
 
@@ -11,6 +10,9 @@ const theme = createTheme({
     secondary: {
       main: '#19857b',
     },
+    third: {
+      red,
+    },
   },
 });
-export default theme
+export default theme;
