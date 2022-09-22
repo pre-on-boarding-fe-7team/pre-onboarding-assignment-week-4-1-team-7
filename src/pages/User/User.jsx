@@ -22,11 +22,25 @@ const Item = styled(Paper)(({ theme }) => ({
   color: theme.palette.text.secondary,
 }));
 
+const UserProperties = {
+  name: '고객명',
+  userOwnAccountNum: '계좌 수',
+  email: '이메일',
+  gender_origin: '성별',
+  birth_date: '생년월일',
+  phone_number: '번호',
+  last_login: '최근 로그인',
+  allow_marketing_push: '수신 동의 여부',
+  is_active: '활성화 여부',
+  created_at: '가입일',
+};
+
 function User() {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
   const { users, searchedUsers, status } = useSelector(state => state.usersReducer);
+  console.info(users);
   console.info(searchedUsers);
   const [filteringType, setFilteringType] = useState(FILTERING_TYPE.NONE);
   const [filteredUsers, setFilteredUsers] = useState([]);
@@ -135,174 +149,36 @@ function User() {
           <Input id="search" value={searchValue} onChange={handleChangeSearchValue} />
         </FormControl>
       </form>
-      {filteringType === FILTERING_TYPE.NONE ? (
+      {status === API_STATUS.SERACH_LOADING ? (
+        <div>Loading...</div>
+      ) : filteringType === FILTERING_TYPE.NONE ? (
         <Box minWidth={'1500px'}>
           <Grid container>
-            <Grid item xs={1}>
-              <Item>고객명</Item>
-              <ul>
-                {users.map(user => (
-                  <li key={user.uuid}>{user.name}</li>
-                ))}
-              </ul>
-            </Grid>
-            <Grid item xs={1}>
-              <Item>계좌 수</Item>
-              <ul>
-                {users.map(user => (
-                  <li key={user.uuid}>{user.userOwnAccountNum}</li>
-                ))}
-              </ul>
-            </Grid>
-            <Grid item xs={1}>
-              <Item>이메일</Item>
-              <ul>
-                {users.map(user => (
-                  <li key={user.uuid}>{user.email}</li>
-                ))}
-              </ul>
-            </Grid>
-            <Grid item xs={1}>
-              <Item>성별</Item>
-              <ul>
-                {users.map(user => (
-                  <li key={user.uuid}>{user.gender_origin}</li>
-                ))}
-              </ul>
-            </Grid>
-            <Grid item xs={1}>
-              <Item>생년월일</Item>
-              <ul>
-                {users?.map(user => {
-                  return <li key={user.uuid}>{user.birth_date}</li>;
-                })}
-              </ul>
-            </Grid>
-            <Grid item xs={1}>
-              <Item>번호</Item>
-              <ul>
-                {users.map(user => (
-                  <li key={user.uuid}>{user.phone_number}</li>
-                ))}
-              </ul>
-            </Grid>
-            <Grid item xs={1}>
-              <Item>최근 로그인</Item>
-              <ul>
-                {users.map(user => (
-                  <li key={user.uuid}>{user.last_login}</li>
-                ))}
-              </ul>
-            </Grid>
-            <Grid item xs={1}>
-              <Item>수신 동의 여부</Item>
-              <ul>
-                {users.map(user => (
-                  <li key={user.uuid}>{String(user.allow_marketing_push)}</li>
-                ))}
-              </ul>
-            </Grid>
-            <Grid item xs={1}>
-              <Item>활성화 여부</Item>
-              <ul>
-                {users.map(user => (
-                  <li key={user.uuid}>{String(user.is_active)}</li>
-                ))}
-              </ul>
-            </Grid>
-            <Grid item xs={1}>
-              <Item>가입일</Item>
-              <ul>
-                {users.map(user => (
-                  <li key={user.uuid}>{user.created_at}</li>
-                ))}
-              </ul>
-            </Grid>
+            {Object.entries(UserProperties).map(([key, value], index) => (
+              <Grid item xs={1}>
+                <Item key={key}>{value}</Item>
+                <ul>
+                  {users.map(user => (
+                    <li key={user.uuid}>{user[key]}</li>
+                  ))}
+                </ul>
+              </Grid>
+            ))}
           </Grid>
         </Box>
       ) : (
         <Box minWidth={'1500px'}>
           <Grid container>
-            <Grid item xs={1}>
-              <Item>고객명</Item>
-              <ul>
-                {filteredUsers?.map(user => (
-                  <li key={user.uuid}>{user.name}</li>
-                ))}
-              </ul>
-            </Grid>
-            <Grid item xs={1}>
-              <Item>계좌 수</Item>
-              <ul>
-                {filteredUsers?.map((user, idx) => (
-                  <li key={user.uuid}>{user.userOwnAccountNum}</li>
-                ))}
-              </ul>
-            </Grid>
-            <Grid item xs={1}>
-              <Item>이메일</Item>
-              <ul>
-                {filteredUsers?.map(user => (
-                  <li key={user.uuid}>{user.email}</li>
-                ))}
-              </ul>
-            </Grid>
-            <Grid item xs={1}>
-              <Item>성별</Item>
-              <ul>
-                {filteredUsers?.map(user => (
-                  <li key={user.uuid}>{user.gender_origin}</li>
-                ))}
-              </ul>
-            </Grid>
-            <Grid item xs={1}>
-              <Item>생년월일</Item>
-              <ul>
-                {filteredUsers?.map(user => {
-                  return <li key={user.uuid}>{user.birth_date}</li>;
-                })}
-              </ul>
-            </Grid>
-            <Grid item xs={1}>
-              <Item>번호</Item>
-              <ul>
-                {filteredUsers?.map(user => (
-                  <li key={user.uuid}>{user.phone_number}</li>
-                ))}
-              </ul>
-            </Grid>
-            <Grid item xs={1}>
-              <Item>최근 로그인</Item>
-              <ul>
-                {filteredUsers?.map(user => (
-                  <li key={user.uuid}>{user.last_login}</li>
-                ))}
-              </ul>
-            </Grid>
-            <Grid item xs={1}>
-              <Item>수신 동의 여부</Item>
-              <ul>
-                {filteredUsers?.map(user => (
-                  <li key={user.uuid}>{String(user.allow_marketing_push)}</li>
-                ))}
-              </ul>
-            </Grid>
-            <Grid item xs={1}>
-              <Item>활성화 여부</Item>
-              <ul>
-                {filteredUsers?.map(user => (
-                  <li key={user.uuid}>{String(user.is_active)}</li>
-                ))}
-              </ul>
-            </Grid>
-            <Grid item xs={1}>
-              <Item>가입일</Item>
-              <ul>
-                {filteredUsers?.map(user => (
-                  <li key={user.uuid}>{user.created_at}</li>
-                ))}
-              </ul>
-            </Grid>
+            {Object.entries(UserProperties).map(([key, value], index) => (
+              <Grid item xs={1}>
+                <Item key={key}>{value}</Item>
+                <ul>
+                  {filteredUsers.map(user => (
+                    <li key={user.uuid}>{user[key]}</li>
+                  ))}
+                </ul>
+              </Grid>
+            ))}
           </Grid>
         </Box>
       )}
