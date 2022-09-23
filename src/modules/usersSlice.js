@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getAccounts, getUsers, getUserSettings, searchUsersList } from '../api/api';
-import { API_STATUS, ACTIVE_TYPE } from '../common/utils/constant';
+import { API_STATUS, ACTIVE_TYPE, FILTERING_TYPE } from '../common/utils/constant';
 import { convertDate, maskingName, maskingPhonNumber } from '../common/utils/utils';
 
 export const fetchUsersList = createAsyncThunk('users/getUsersList', async () => {
@@ -10,7 +10,8 @@ export const fetchUsersList = createAsyncThunk('users/getUsersList', async () =>
       getAccounts(),
       getUserSettings(),
     ]);
-    users.value.data.pop();
+    users.value.data = users.value.data.slice(0, 100);
+    console.info(users.value.data);
     const userOwnAccountNum = Array.from({ length: users.value.data.length }, () => 0);
     for (const value of accounts.value.data) {
       userOwnAccountNum[value.user_id - 1] += 1;
@@ -83,13 +84,32 @@ export const fetchSearchUsersList = createAsyncThunk('users/searchUsersList', as
 
 const initialState = {
   users: [],
-  searchedUsers: [],
+  filteredUsers: [],
   status: API_STATUS.LOADING,
 };
 
 export const usersSlice = createSlice({
   name: 'users',
   initialState,
+  reducers: {
+    noFilteringUsers: state => {
+      state.filteredUsers = state.users;
+    },
+    activeFilteringUsers: state => {
+      state.filteredUsers = state.users.filter(user => user.is_active === FILTERING_TYPE.ACTIVE);
+    },
+    noneActiveFilteringUsers: state => {
+      state.filteredUsers = state.users.filter(
+        user => user.is_active === FILTERING_TYPE.NONE_ACTIVE
+      );
+    },
+    staffFilteringUsers: state => {
+      state.filteredUsers = state.users.filter(user => user.is_staff === FILTERING_TYPE.STAFF);
+    },
+    noneStaffFilteringUsers: state => {
+      state.filteredUsers = state.users.filter(user => user.is_staff === FILTERING_TYPE.NONE_STAFF);
+    },
+  },
   extraReducers: builder => {
     builder.addCase(fetchUsersList.pending, (state, action) => {
       state.status = API_STATUS.LOADING;
@@ -105,7 +125,7 @@ export const usersSlice = createSlice({
       state.status = API_STATUS.SERACH_LOADING;
     });
     builder.addCase(fetchSearchUsersList.fulfilled, (state, action) => {
-      state.searchedUsers = action.payload;
+      state.users = action.payload;
       state.status = API_STATUS.SUCCESS;
     });
     builder.addCase(fetchSearchUsersList.rejected, (state, action) => {
@@ -114,4 +134,11 @@ export const usersSlice = createSlice({
   },
 });
 
+export const {
+  noFilteringUsers,
+  activeFilteringUsers,
+  noneActiveFilteringUsers,
+  staffFilteringUsers,
+  noneStaffFilteringUsers,
+} = usersSlice.actions;
 export default usersSlice.reducer;
