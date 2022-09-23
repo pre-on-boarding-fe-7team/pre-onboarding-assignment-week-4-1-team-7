@@ -20,7 +20,7 @@ const header = [
   'created_at',
 ];
 
-const AccountList = () => {
+const AccountList = ({ items }) => {
   const dispatch = useDispatch();
   const accounts = useSelector(state => state.accounts);
   const users = useSelector(state => state.users.users);
@@ -57,7 +57,7 @@ const AccountList = () => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {accounts.data.data.map(account => (
+                {items.map(account => (
                   <TableRow key={account.uuid}>
                     <TableCell>{getUserName(account.id)}</TableCell>
                     <TableCell>{account.broker_id}</TableCell>

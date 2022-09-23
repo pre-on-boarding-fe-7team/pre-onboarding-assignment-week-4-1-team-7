@@ -39,17 +39,22 @@ const brokerList = jsonToArray({
   271: '토스증권',
 });
 
-const SearchBar = ({ title, onSearch }) => {
+const SearchBar = ({ title, onSearch, setMenu }) => {
   const [searchParams, setSearchParams] = useSearchParams();
   //   const changeHandler = e => {
   //     setQuery(e.target.value);
   //   };
   const broker_id = searchParams.get('broker');
   const is_active = searchParams.get('active');
+
   const searchHandler = ({ target: { value }, key }) => {
     if (key !== 'Enter') return;
 
     setSearchParams({ page: 1, q: value, broker_id, is_active });
+  };
+
+  const selectoption = e => {
+    setMenu(e.target.value);
   };
 
   return (
@@ -91,7 +96,7 @@ const SearchBar = ({ title, onSearch }) => {
                 fullWidth
                 label="Select State"
                 name="broker_name"
-                // onChange={handleChange}
+                onChange={selectoption}
                 select
                 SelectProps={{ native: true }}
                 // value={values.state}

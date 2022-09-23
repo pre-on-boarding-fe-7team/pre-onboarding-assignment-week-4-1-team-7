@@ -3,7 +3,7 @@ import data from '../../api/data.json';
 
 export const boolToIcon = flag => flag && <CheckIcon />;
 
-export const makeGetUserName = users => id => users.find(user => user.id === id).name;
+export const makeGetUserName = users => id => users?.find(user => user.id === id).name;
 
 export const jsonToArray = json => {
   let result = [];
@@ -13,8 +13,8 @@ export const jsonToArray = json => {
   return result;
 };
 
-export const getBrokerName = id => data.brokers.find(broker => broker.id === id).name;
+export const getBrokerName = id => data.brokers?.find(broker => broker.id === id).name;
 
-export const getAccountStatus = id => data.accountStatus.find(statu => statu.name === id).id;
+export const getAccountStatus = id => data.accountStatus?.find(statu => statu.name === id).id;
 
 // export const getAccountFormatByBroker = (number, brokerId) =>
