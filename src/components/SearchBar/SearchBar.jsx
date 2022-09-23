@@ -62,7 +62,7 @@ const SearchBar = ({ title }) => {
       <Box sx={{ mt: 3 }}>
         <Card>
           <CardContent>
-            <Box sx={{ maxWidth: 200 }}>
+            <Box style={{ display: 'flex' }}>
               <TextField
                 fullWidth
                 InputProps={{
