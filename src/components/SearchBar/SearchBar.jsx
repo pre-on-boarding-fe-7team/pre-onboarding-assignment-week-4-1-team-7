@@ -45,15 +45,16 @@ const SearchBar = ({ title, onSearch, setMenu }) => {
   //     setQuery(e.target.value);
   //   };
   console.info(searchParams);
-  // const broker_id = searchParams.get('broker');
+  const broker_id = searchParams.get('broker_id');
+  const q = searchParams.get('q');
   // const is_active = searchParams.get('active');
 
   const selectoption = ({ target: { value } }) => {
-    setSearchParams({ page: 1, broker_id: value });
+    setSearchParams({ page: 1, q, broker_id: value });
   };
   const searchHandler = ({ target: { value }, key }) => {
     if (key !== 'Enter') return;
-    setSearchParams({ page: 1, q: value });
+    setSearchParams({ page: 1, q: value, broker_id });
   };
 
   return (
@@ -89,7 +90,7 @@ const SearchBar = ({ title, onSearch, setMenu }) => {
                 variant="outlined"
                 onKeyDown={searchHandler}
                 // onChange={changeHandler}
-                // value={query}
+                defaultValue={q}
               />
               <TextField
                 fullWidth
@@ -98,7 +99,7 @@ const SearchBar = ({ title, onSearch, setMenu }) => {
                 onChange={selectoption}
                 select
                 SelectProps={{ native: true }}
-                // value={values.state}
+                value={broker_id}
                 variant="outlined"
               >
                 {brokerList.map(option => (
