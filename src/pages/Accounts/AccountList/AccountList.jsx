@@ -41,6 +41,11 @@ const AccountList = () => {
     dispatch(fetchAccounts({ _page, q, broker_id, is_active }));
   }, [dispatch, _page, q, broker_id, is_active]);
 
+  // const masking = number => {
+  //  if(number === 209
+  //  )
+  // };
+
   if (accounts.loading) return <Loading />;
   if (accounts.error) return <p>에러</p>;
   if (accounts.data)

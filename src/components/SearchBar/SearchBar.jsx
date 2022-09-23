@@ -50,7 +50,7 @@ const SearchBar = ({ title, onSearch, setMenu }) => {
   // const is_active = searchParams.get('active');
 
   const selectoption = ({ target: { value } }) => {
-    setSearchParams({ page: 1, q, broker_id: value });
+    setSearchParams({ page: 1, broker_id: value });
   };
   const searchHandler = ({ target: { value }, key }) => {
     if (key !== 'Enter') return;
