@@ -1,7 +1,16 @@
 import React, { useCallback, useEffect, useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 import { styled } from '@mui/material/styles';
 import { useDispatch, useSelector } from 'react-redux';
-import { fetchSearchUsersList, fetchUsersList } from '../../modules/usersSlice';
+import {
+  noFilteringUsers,
+  activeFilteringUsers,
+  noneActiveFilteringUsers,
+  staffFilteringUsers,
+  noneStaffFilteringUsers,
+  fetchSearchUsersList,
+  fetchUsersList,
+} from '../../modules/usersSlice';
 import { API_STATUS, FILTERING_TYPE, ROUTE } from '../../common/utils/constant';
 
 import Box from '@mui/material/Box';
@@ -12,7 +21,6 @@ import MenuItem from '@mui/material/MenuItem';
 import FormControl from '@mui/material/FormControl';
 import Select from '@mui/material/Select';
 import Input from '@mui/material/Input';
-import { useNavigate } from 'react-router-dom';
 
 const Item = styled(Paper)(({ theme }) => ({
   backgroundColor: theme.palette.mode === 'dark' ? '#1A2027' : '#fff',
@@ -39,11 +47,8 @@ function User() {
   const navigate = useNavigate();
 
   const dispatch = useDispatch();
-  const { users, searchedUsers, status } = useSelector(state => state.usersReducer);
-
+  const { users, filteredUsers, status } = useSelector(state => state.usersReducer);
   const [filteringType, setFilteringType] = useState(FILTERING_TYPE.NONE);
-  const [filteredUsers, setFilteredUsers] = useState([]);
-
   const [searchValue, setSearchValue] = useState('');
 
   const handleSubmitSearchValue = async e => {
@@ -64,61 +69,40 @@ function User() {
     setSearchValue(value);
   }, []);
 
-  const activeFiltering = useCallback(
-    isActive => {
-      if (searchedUsers.length === 0) {
-        setFilteredUsers(users.filter(user => user.is_active === isActive));
-      } else {
-        setFilteredUsers(filteredUsers.filter(user => user.is_active === isActive));
-      }
-    },
-    [filteredUsers, searchedUsers.length, users]
-  );
-
-  const staffFiltering = useCallback(
-    isStaff => {
-      if (searchedUsers.length === 0) {
-        setFilteredUsers(users.filter(user => user.is_staff === isStaff));
-      } else {
-        setFilteredUsers(filteredUsers.filter(user => user.is_staff === isStaff));
-      }
-    },
-    [filteredUsers, searchedUsers.length, users]
-  );
-
   const handleChangeFiltering = ({ target: { value } }) => {
     setFilteringType(value);
 
     switch (value) {
       case FILTERING_TYPE.NONE:
+        dispatch(noFilteringUsers());
         navigate({
           pathname: ROUTE.USER,
           search: '',
         });
         break;
       case FILTERING_TYPE.ACTIVE:
-        activeFiltering(FILTERING_TYPE.ACTIVE);
+        dispatch(activeFilteringUsers());
         navigate({
           pathname: ROUTE.USER,
           search: '?filter=active',
         });
         break;
       case FILTERING_TYPE.NONE_ACTIVE:
-        activeFiltering(FILTERING_TYPE.NONE_ACTIVE);
+        dispatch(noneActiveFilteringUsers());
         navigate({
           pathname: ROUTE.USER,
           search: '?filter=not-active',
         });
         break;
       case FILTERING_TYPE.STAFF:
-        staffFiltering(FILTERING_TYPE.STAFF);
+        dispatch(staffFilteringUsers());
         navigate({
           pathname: ROUTE.USER,
           search: '?filter=staff',
         });
         break;
       case FILTERING_TYPE.NONE_STAFF:
-        staffFiltering(FILTERING_TYPE.NONE_STAFF);
+        dispatch(noneStaffFilteringUsers());
         navigate({
           pathname: ROUTE.USER,
           search: '?filter=not-staff',
@@ -139,10 +123,6 @@ function User() {
     };
     getUserList();
   }, [dispatch]);
-
-  useEffect(() => {
-    setFilteredUsers(searchedUsers);
-  }, [searchedUsers]);
 
   return status === API_STATUS.LOADING ? (
     <div>Loading...</div>
