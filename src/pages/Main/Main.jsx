@@ -1,4 +1,4 @@
-import React from 'react';
+// import React, { useState } from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
@@ -7,7 +7,7 @@ import { Container, Item } from './Main.style';
 // import { getUserSettingFetch } from '../../modules/userSettingSlice';
 // import { useEffect } from 'react';
 
-// mui tutorial
+// 이 페이지 처음에 들어왔을 때 localstorage에 토큰 있으면 자동으로 로그인 후 보이는 페이지로 연동되게끔.
 function Main() {
   // const dispatch = useDispatch();
   // const setting = useSelector(state => {
