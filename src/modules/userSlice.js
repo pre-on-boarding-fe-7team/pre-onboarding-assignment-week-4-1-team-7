@@ -5,9 +5,12 @@ const getUsersFetch = createAsyncThunk('userSlice/getUsersFetch', async (page, l
   return await apiservice.getUsersApi(page, limit);
 });
 
-const searchUsersFetch = createAsyncThunk('userSlice/searchUsersFetch', async query => {
-  return await apiservice.searchUsersApi(query);
-});
+const searchUsersFetch = createAsyncThunk(
+  'userSlice/searchUsersFetch',
+  async (query, page, limit) => {
+    return await apiservice.searchUsersApi(query, page, limit);
+  }
+);
 
 const userSlice = createSlice({
   name: 'userSlice',

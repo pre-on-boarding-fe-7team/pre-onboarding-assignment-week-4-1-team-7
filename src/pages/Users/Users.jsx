@@ -12,6 +12,7 @@ const Users = ({ token }) => {
   const page = searchParams.get('page');
   let limit = searchParams.get('limit');
   limit = 10;
+  const query = searchParams.get('query');
 
   const users = useSelector(state => {
     return state.users.users;
@@ -35,15 +36,21 @@ const Users = ({ token }) => {
     dispatch(getUsersFetch(page, limit));
   }, [dispatch, setSearchParams, page, limit]);
 
+  // const [page, setPage] = useState([]);
   const pageNumbers = [];
   for (let i = 1; i <= Math.ceil((total - 1) / 10); i++) {
     pageNumbers.push(i);
   }
 
+  //첫화면에서 바로 검색하면-> page:1
+  //일반페이지네이션이면 dispatch(getFetch), 검색후페이지네이션이면 searchFetch
   const handlePage = p => {
     const clickPage = page === null ? 1 : parseInt(p);
-    setSearchParams({ page: clickPage, limit });
-    dispatch(getUsersFetch(p, limit));
+    setSearchParams({ page: clickPage, limit }); //조건안으로?
+    if (inputRef.current.value === '') {
+      return dispatch(getUsersFetch(p, limit));
+    }
+    dispatch(searchUsersFetch(inputRef.current.value, p, 10));
   };
 
   //검색
@@ -52,7 +59,9 @@ const Users = ({ token }) => {
     event.preventDefault();
     const search = inputRef.current.value;
     if (search === '') return;
-    dispatch(searchUsersFetch(search));
+    dispatch(searchUsersFetch(search)); //첫검색때는 검색어만 보낸다
+    //setSearchParams-> 1페이지, 리밋재설정
+    setSearchParams({ page: 1, limit: 10, query: search !== '' ? search : query });
   };
 
   if (status && !users) return <div>{status}</div>;
