@@ -1,5 +1,4 @@
-import React from 'react';
-import { useEffect } from 'react';
+import React, { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getUsersFetch } from '../../modules/userSlice';
@@ -52,11 +51,6 @@ const Users = ({ token }) => {
   return (
     <>
       <div>라라라</div>
-      {/* <ul>
-        {users.map(user => (
-          <UserTable key={user.uuid + user.id} user={user} />
-        ))}
-      </ul> */}
       <UserTable users={users} />
       <ul>
         {pageNumbers.map((p, i) => (

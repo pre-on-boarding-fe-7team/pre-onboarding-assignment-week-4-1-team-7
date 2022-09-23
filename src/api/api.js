@@ -22,6 +22,15 @@ class ApiService {
     });
     return { data: response.data, total: response.headers['x-total-count'] };
   }
+
+  async getSettingApi() {
+    const response = await axios.get(`/userSetting`, {
+      headers: {
+        Authorization: this.getHeaders(),
+      },
+    });
+    return response.data;
+  }
 }
 
 export default ApiService;
