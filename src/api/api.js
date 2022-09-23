@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 const token =
-  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1amluQGdtYWlsLmNvbSIsImlhdCI6MTY2MzkwODE2OCwiZXhwIjoxNjYzOTExNzY4LCJzdWIiOiIxMDEifQ.m6dAhQatgwW3VU117Aemtz0EuC_MYxHNBTZjvs6fNtc';
+  'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1amluQGdtYWlsLmNvbSIsImlhdCI6MTY2Mzk0OTc0NSwiZXhwIjoxNjYzOTUzMzQ1LCJzdWIiOiIxMDEifQ.74m0WR8hiEk4Hz_WgXHrQlqjdbZE-rBK9vynNhXD7RI';
 
 const api = axios.create({
   headers: {

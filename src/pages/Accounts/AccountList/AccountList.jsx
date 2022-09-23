@@ -38,9 +38,6 @@ const AccountList = () => {
   const navigate = useNavigate();
 
   const handleClickAccountNumber = accounetNumber => {
-    // console.info(accounts.data.data.number);
-    // const seletUserData = accounts.filter(accounts => accounts.data.data.number === accounetNumber);
-    // navigate(`/accounts/${accounetNumber}`, { state: { seletUserData } });
     navigate(`/accounts/${accounetNumber}`);
   };
 
