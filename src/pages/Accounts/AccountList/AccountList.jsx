@@ -1,49 +1,52 @@
 import { Box, Card, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
-import { boolToIcon, makeGetUserName } from '../../../common/utils/field.util';
+import {
+  boolToIcon,
+  getAccountFormat,
+  getAccountStatus,
+  getBrokerName,
+  getCurrency,
+  getDateFormat,
+  makeGetUserName,
+} from '../../../common/utils/field.util';
 import Loading from '../../../components/Loading/Loading';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { useSearchParams } from 'react-router-dom';
 import { fetchAccounts } from '../../../modules/accountsSlice';
 import AccountPagination from '../AccountPagination';
 import { getUsersFetch } from '../../../modules/userSlice';
+import Earning from '../../../components/Earning/Earning';
+import useQeuryStringParams from '../../../common/hooks/useQeuryStringParams';
 
 const header = [
-  'user_name',
-  'broker_name',
-  'number',
-  'status',
-  'name',
-  'assets',
-  'payments',
-  'is_active',
-  'created_at',
+  '고객명',
+  '브로커명',
+  '계좌번호',
+  '계좌상태',
+  '계좌명',
+  '평가금액',
+  '입금금액',
+  '계좌활성화여부',
+  '계좌개설일',
 ];
 
 const AccountList = () => {
   const dispatch = useDispatch();
   const accounts = useSelector(state => state.accounts);
-  const users = useSelector(state => state.users.users);
-  const getUserName = makeGetUserName(users);
-
-  // TODO customHook ???
-  const [searchParams] = useSearchParams();
-  const _page = Number.parseInt(searchParams.get('page') || 1);
-  const q = searchParams.get('q');
-  const broker_id = searchParams.get('broker');
-  const is_active = searchParams.get('active');
+  const users = useSelector(state => state.users);
+  const [{ _page, q, broker_id, is_active, status }] = useQeuryStringParams();
 
   useEffect(() => {
     dispatch(getUsersFetch());
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchAccounts({ _page, q, broker_id, is_active }));
-  }, [dispatch, _page, q, broker_id, is_active]);
+    dispatch(fetchAccounts({ _page, q, broker_id, is_active, status }));
+  }, [dispatch, _page, q, broker_id, is_active, status]);
 
+  // TODO users.status = success
   if (accounts.loading) return <Loading />;
   if (accounts.error) return <p>에러</p>;
-  if (accounts.data)
+  if (accounts.data && users.users)
     return (
       <Box sx={{ mt: 3 }}>
         <Card>
@@ -59,15 +62,21 @@ const AccountList = () => {
               <TableBody>
                 {accounts.data.data.map(account => (
                   <TableRow key={account.uuid}>
-                    <TableCell>{getUserName(account.id)}</TableCell>
-                    <TableCell>{account.broker_id}</TableCell>
-                    <TableCell>{account.number}</TableCell>
-                    <TableCell>{account.status}</TableCell>
+                    <TableCell>{makeGetUserName(users.users)(account.id)}</TableCell>
+                    <TableCell>{getBrokerName(account.broker_id)}</TableCell>
+                    <TableCell>{getAccountFormat(account.broker_id, account.number)}</TableCell>
+                    <TableCell>{getAccountStatus(account.status)}</TableCell>
                     <TableCell>{account.name}</TableCell>
-                    <TableCell>{account.assets}</TableCell>
-                    <TableCell>{account.payments}</TableCell>
+                    <TableCell sx={{ textAlign: 'right' }}>
+                      <Earning assets={account.assets} payments={account.payments}>
+                        {getCurrency(account.assets)}
+                      </Earning>
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'right' }}>
+                      {getCurrency(account.payments)}
+                    </TableCell>
                     <TableCell>{boolToIcon(account.is_active)}</TableCell>
-                    <TableCell>{account.created_at}</TableCell>
+                    <TableCell>{getDateFormat(account.created_at)}</TableCell>
                   </TableRow>
                 ))}
               </TableBody>

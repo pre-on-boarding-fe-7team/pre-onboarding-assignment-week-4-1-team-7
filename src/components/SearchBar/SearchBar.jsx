@@ -8,49 +8,41 @@ import {
   Typography,
 } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
-import { jsonToArray } from '../../common/utils/field.util';
-import { useSearchParams } from 'react-router-dom';
+import { getStatus, jsonToArray } from '../../common/utils/field.util';
+import { getBrokers } from '../../common/utils/field.util';
+import { useEffect, useState } from 'react';
+import useQeuryStringParams from '../../common/hooks/useQeuryStringParams';
 
-const brokerList = jsonToArray({
-  209: '유안타증권',
-  218: '현대증권',
-  230: '미래에셋증권',
-  238: '대우증권',
-  240: '삼성증권',
-  243: '한국투자증권',
-  247: '우리투자증권',
-  261: '교보증권',
-  262: '하이투자증권',
-  263: 'HMC투자증권',
-  264: '키움증권',
-  265: '이베스트투자증권',
-  266: 'SK증권',
-  267: '대신증권',
-  268: '아이엠투자증권',
-  269: '한화투자증권',
-  270: '하나대투자증권',
-  279: '동부증권',
-  280: '유진투자증권',
-  288: '카카오페이증권',
-  287: '메리츠종합금융증권',
-  290: '부국증권',
-  291: '신영증권',
-  292: 'LIG투자증권',
-  271: '토스증권',
-});
-
-const SearchBar = ({ title, onSearch }) => {
-  const [searchParams, setSearchParams] = useSearchParams();
-  //   const changeHandler = e => {
-  //     setQuery(e.target.value);
-  //   };
-  const broker_id = searchParams.get('broker');
-  const is_active = searchParams.get('active');
+const SearchBar = ({ title }) => {
+  const [values, setValues] = useState({
+    q: '',
+    broker_id: '',
+    is_active: '',
+    status: '',
+  });
+  const [{ q, broker_id, is_active, status }, setQueryString] = useQeuryStringParams();
   const searchHandler = ({ target: { value }, key }) => {
     if (key !== 'Enter') return;
 
-    setSearchParams({ page: 1, q: value, broker_id, is_active });
+    setQueryString({ _page: 1, q: value });
   };
+  const searchChangeHandler = ({ target: { value } }) => {
+    setValues(state => ({ ...state, q: value }));
+  };
+  const changeHandler = ({ target: { name, value } }) => {
+    setValues(state => ({ ...state, [name]: value }));
+    setQueryString({ [name]: value });
+  };
+
+  useEffect(() => {
+    setValues(state => ({
+      ...state,
+      q: q || '',
+      broker_id: broker_id || '',
+      is_active: is_active || '',
+      status: status || '',
+    }));
+  }, [q, broker_id, is_active, status]);
 
   return (
     <Box>
@@ -84,22 +76,59 @@ const SearchBar = ({ title, onSearch }) => {
                 }}
                 variant="outlined"
                 onKeyDown={searchHandler}
-                // onChange={changeHandler}
-                // value={query}
+                onChange={searchChangeHandler}
+                name="q"
+                value={values.q}
               />
               <TextField
                 fullWidth
-                label="Select State"
-                name="broker_name"
-                // onChange={handleChange}
+                label="브로커명"
+                onChange={changeHandler}
                 select
                 SelectProps={{ native: true }}
-                // value={values.state}
+                name="broker_id"
+                value={values.broker_id}
                 variant="outlined"
               >
-                {brokerList.map(option => (
+                <option key="ALL_BROKER" value=""></option>
+                {jsonToArray(getBrokers()).map(option => (
                   <option key={option.key} value={option.key}>
                     {option.value}
+                  </option>
+                ))}
+              </TextField>
+              <TextField
+                fullWidth
+                label="계좌 활성화여부"
+                onChange={changeHandler}
+                select
+                SelectProps={{ native: true }}
+                name="is_active"
+                value={values.is_active}
+                variant="outlined"
+              >
+                <option key="ALL_ACTIVE" value=""></option>
+                <option key="true" value="true">
+                  활성화
+                </option>
+                <option key="false" value="false">
+                  비활성화
+                </option>
+              </TextField>
+              <TextField
+                fullWidth
+                label="계좌 상태"
+                onChange={changeHandler}
+                select
+                SelectProps={{ native: true }}
+                name="status"
+                value={values.status}
+                variant="outlined"
+              >
+                <option key="ALL_STATUS" value=""></option>
+                {jsonToArray(getStatus()).map(option => (
+                  <option key={option.value} value={option.value}>
+                    {option.key}
                   </option>
                 ))}
               </TextField>
