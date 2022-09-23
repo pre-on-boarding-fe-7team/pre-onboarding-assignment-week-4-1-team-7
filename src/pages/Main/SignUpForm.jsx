@@ -1,15 +1,14 @@
 import { Button, Input } from '@mui/material';
 import React from 'react';
-import { postSignUp } from '../../api/api';
+import { postSignUpApi } from '../../api/api';
 import useInputs from '../../hooks/useInputs';
 
 const SignUpForm = ({ setisSignUp }) => {
   const [userValues, onChangeValues] = useInputs({ email: '', password: '' });
   const { email, password } = userValues;
-  console.info({ ...userValues });
   const handleClickDoneBtn = e => {
     e.preventDefault();
-    postSignUp({ ...userValues });
+    postSignUpApi({ ...userValues });
     setisSignUp(false);
   };
   return (

@@ -1,6 +1,6 @@
 export const ROUTE = {
   MAIN: '/',
-  USER_LIST: '/userlist',
-  USER_DETAIL: '/userdetail',
+  USER_LIST: '/users',
+  USER_DETAIL: '/users/:id',
   NOT_FOUND: '*',
 };

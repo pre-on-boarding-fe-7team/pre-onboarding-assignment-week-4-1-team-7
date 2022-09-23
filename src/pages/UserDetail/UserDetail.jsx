@@ -8,56 +8,102 @@ import {
   TableHead,
   TableRow,
 } from '@mui/material';
-import { useState } from 'react';
-import { useLocation } from 'react-router-dom';
-
+import { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useLocation, useParams } from 'react-router-dom';
+import { patchUserDataApi } from '../../api/api';
+import useInputs from '../../hooks/useInputs';
+import { getAccountsThunk } from '../../modules/accountsSlice';
+import UserAccountList from './UserAccountList';
 const UserDetail = () => {
   const location = useLocation();
-  const userData = location.state;
+  const dispatch = useDispatch();
+  const { userId } = useParams();
+  const accounts = useSelector(state => state.accounts);
+  const userData = location.state.seletUserData[0];
+  const userTrue = location.state.trueFalse;
   const [isform, setIsform] = useState(false);
-  //1. 아래에서 변경 누르면 form으로 변하게 할 useState를 위에 만든다.
-  //2.
-  console.info('userDetail 데이터 =', userData);
-  return (
-    <div>
-      <Button
-        onClick={() => {
-          setIsform(!true);
-        }}
-      >
-        {isform ? '변경 취소' : '변경'}
-      </Button>
-      <Box sx={{ maxWidth: 800 }}>
-        <Table>
-          <TableHead>개인 정보</TableHead>
-          <TableBody>
-            <TableRow>
-              {isform ? <Input /> : <TableCell>{userData.name}</TableCell>}
-              <TableCell>{userData.gender_origin}</TableCell>
-              <TableCell>{userData.age}</TableCell>
-              <TableCell>{userData.email}</TableCell>
-              <TableCell>{userData.phone_number}</TableCell>
-            </TableRow>
-            <TableRow>
-              <TableCell>{userData.address}</TableCell>
-              <TableCell>{userData.detail_address}</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </Box>
-      <Box sx={{ maxWidth: 800 }}>
-        <Table>
-          <TableHead>계좌 목록</TableHead>
-          <TableBody>
-            <TableRow>
-              <TableCell>계좌이름</TableCell>
-              <TableCell>계좌 내용</TableCell>
-            </TableRow>
-          </TableBody>
-        </Table>
-      </Box>
-    </div>
-  );
+  const [userValues, onChangeValues] = useInputs({ name: userData.name });
+  const { name } = userValues;
+  useEffect(() => {
+    dispatch(getAccountsThunk());
+  }, [dispatch]);
+
+  const handleClickUserPatch = () => {
+    setIsform(!isform);
+    patchUserDataApi(userValues, userId);
+  };
+
+  const userAccouts = accounts.data?.filter(user => user.user_id === userData.id);
+
+  if (userData && userTrue && accounts.data)
+    return (
+      <div>
+        {isform ? (
+          <>
+            <Button
+              onClick={() => {
+                setIsform(!isform);
+              }}
+            >
+              취소
+            </Button>
+            <Button onClick={handleClickUserPatch}>완료</Button>
+          </>
+        ) : (
+          <Button
+            onClick={() => {
+              setIsform(!isform);
+            }}
+          >
+            수정하기
+          </Button>
+        )}
+
+        <Box sx={{ maxWidth: 1000 }}>
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell>개인 정보</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              <TableRow>
+                {isform ? (
+                  <TableCell>
+                    <Input type="text" name="name" value={name} onChange={onChangeValues} />{' '}
+                  </TableCell>
+                ) : (
+                  <TableCell>{userData.name}</TableCell>
+                )}
+                <TableCell>{userData.gender_origin}</TableCell>
+                <TableCell>{userData.age}</TableCell>
+                <TableCell>{userData.email}</TableCell>
+                <TableCell>{userData.phone_number}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell>{userTrue.is_active ? '🟢' : '🔴'}</TableCell>
+                <TableCell>{userTrue.is_staff ? '🟢' : '🔴'}</TableCell>
+                <TableCell>{userData.address}</TableCell>
+                <TableCell>{userData.detail_address}</TableCell>
+              </TableRow>
+            </TableBody>
+          </Table>
+        </Box>
+        <Box sx={{ maxWidth: 800 }}>
+          <Table>
+            <TableHead>
+              <TableCell>계좌 목록</TableCell>
+            </TableHead>
+            <TableBody>
+              {userAccouts?.map((value, idx) => {
+                return <UserAccountList key={idx} userAccouts={value} />;
+              })}
+            </TableBody>
+          </Table>
+        </Box>
+      </div>
+    );
 };
 
 export default UserDetail;

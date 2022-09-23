@@ -13,30 +13,39 @@ api.interceptors.request.use(
   }
 );
 
-export const postSignUp = async ({ ...userValues }) => {
+export const postSignUpApi = async ({ ...userValues }) => {
   const res = await axios.post('/users/signup', { ...userValues });
-  // console.info('API', res);
   return res.data;
 };
 
-export const postLogin = async ({ ...userValues }) => {
+export const postLoginApi = async ({ ...userValues }) => {
   try {
     const res = await axios.post('/login', { ...userValues });
-    // console.info('API', res);
     localStorage.setItem('accessToken', res.data.accessToken);
   } catch (err) {
     alert(err);
   }
 };
 
-export const getUsers = async () => {
-  const res = await api.get('/users');
-  // console.info('getUsers', res);
+export const getUsersApi = async (page, limit) => {
+  const res = await api.get('/users', {
+    params: {
+      _page: page,
+      _limit: limit,
+    },
+  });
+  return { data: res.data, total: res.headers['x-total-count'] };
+};
+
+export const getSettingApi = async () => {
+  const res = await api.get(`/userSetting`);
   return res.data;
 };
 
-export const getAccounts = async () => {
+export const getAccountsApi = async () => {
   const res = await api.get('/accounts');
-  // console.info('getUsers', res);
   return res.data;
 };
+
+export const patchUserDataApi = async ({ ...userValues }, userId) =>
+  await api.patch(`/users/${userId}`, { ...userValues });

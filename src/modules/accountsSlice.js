@@ -1,18 +1,17 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getAccounts } from '../api/api';
+import { getAccountsApi } from '../api/api';
 import { reducerUtils } from '../common/utils/asyncUtils';
 
 //action Fn
 export const getAccountsThunk = createAsyncThunk(
   'accountsSlice/getAccountsThunk',
-  async () => await getAccounts()
+  async () => await getAccountsApi()
 );
 
 //slice
 const accountsSlice = createSlice({
   name: 'accounts',
   initialState: reducerUtils.initial(),
-  reducers: {},
   extraReducers: {
     [getAccountsThunk.pending]: (state, action) => {
       state.loading = true;

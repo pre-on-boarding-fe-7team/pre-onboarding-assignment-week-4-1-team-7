@@ -1,18 +1,17 @@
 import { Button, Input } from '@mui/material';
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-import { postLogin } from '../../api/api';
+import { postLoginApi } from '../../api/api';
 import useInputs from '../../hooks/useInputs';
 
 const LoginForm = ({ setisSignUp }) => {
   const navigate = useNavigate();
   const [userValues, onChangeValues] = useInputs({ email: '', password: '' });
   const { email, password } = userValues;
-  console.info({ ...userValues });
   const handleSubmitLogin = e => {
     e.preventDefault();
-    postLogin({ ...userValues }).then(res => {
-      navigate('/userlist');
+    postLoginApi({ ...userValues }).then(res => {
+      navigate('/users');
     });
   };
   return (
