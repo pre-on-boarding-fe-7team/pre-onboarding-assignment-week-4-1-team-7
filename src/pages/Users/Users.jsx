@@ -1,7 +1,7 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { getUsersFetch } from '../../modules/userSlice';
+import { getUsersFetch, searchUsersFetch } from '../../modules/userSlice';
 import UserTable from './UserTable';
 
 const Users = ({ token }) => {
@@ -46,10 +46,23 @@ const Users = ({ token }) => {
     dispatch(getUsersFetch(p, limit));
   };
 
-  if (status && !users) return <div>{status}</div>;
+  //검색
+  const inputRef = useRef();
+  const handleSearch = event => {
+    event.preventDefault();
+    const search = inputRef.current.value;
+    if (search === '') return;
+    dispatch(searchUsersFetch(search));
+  };
 
+  if (status && !users) return <div>{status}</div>;
   return (
     <>
+      <form onSubmit={handleSearch}>
+        <input ref={inputRef} type="text" placeholder="Search..." />
+        <button>검색</button>
+      </form>
+
       <div>라라라</div>
       <UserTable users={users} />
       <ul>

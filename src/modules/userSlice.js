@@ -5,6 +5,10 @@ const getUsersFetch = createAsyncThunk('userSlice/getUsersFetch', async (page, l
   return await apiservice.getUsersApi(page, limit);
 });
 
+const searchUsersFetch = createAsyncThunk('userSlice/searchUsersFetch', async query => {
+  return await apiservice.searchUsersApi(query);
+});
+
 const userSlice = createSlice({
   name: 'userSlice',
   initialState: {
@@ -22,6 +26,11 @@ const userSlice = createSlice({
       state.total = action.payload.total;
       // state.status = 'complete';
     });
+    builder.addCase(searchUsersFetch.fulfilled, (state, action) => {
+      state.users = action.payload.data;
+      state.total = action.payload.total;
+      // state.status = 'complete';
+    });
     builder.addCase(getUsersFetch.rejected, (state, action) => {
       state.status = 'Fail';
     });
@@ -29,4 +38,4 @@ const userSlice = createSlice({
 });
 
 export default userSlice;
-export { getUsersFetch };
+export { getUsersFetch, searchUsersFetch };
