@@ -1,32 +1,24 @@
-import React from 'react';
+// import React, { useState } from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
-import Stack from '@mui/material/Stack';
-import Button from '@mui/material/Button';
-import { Container, Item } from './Main.style';
+import { useState } from 'react';
+import LoginForm from './LoginForm';
+import { Container } from './Main.style';
+import SignUpForm from './SignUpForm';
 
-// mui tutorial
+// 이 페이지 처음에 들어왔을 때 localstorage에 토큰 있으면 자동으로 로그인 후 보이는 페이지로 연동되게끔.
 function Main() {
+  const [isSignUp, setisSignUp] = useState(false);
   return (
-    <Container maxWidth={"1000px"} sx={{ flexGrow: 1 }}>
+    <Container maxWidth={'1000px'} sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>
         <Grid xs={8}>
-          <Item>xs=8</Item>
-        </Grid>
-        <Grid xs={4}>
-          <Item>xs=4</Item>
-        </Grid>
-        <Grid xs={4}>
-          <Item>xs=4</Item>
-        </Grid>
-        <Grid xs={8}>
-          <Item>xs=8</Item>
+          {isSignUp ? (
+            <SignUpForm setisSignUp={setisSignUp} />
+          ) : (
+            <LoginForm setisSignUp={setisSignUp} />
+          )}
         </Grid>
       </Grid>
-      <Stack spacing={2} direction="row">
-      <Button variant="text">Text</Button>
-      <Button variant="contained">Contained</Button>
-      <Button variant="outlined">Outlined</Button>
-    </Stack>
     </Container>
   );
 }
