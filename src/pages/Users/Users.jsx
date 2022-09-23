@@ -3,7 +3,7 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { getUsersFetch } from '../../modules/userSlice';
-import UserDetail from './UserDetail/UserDetail';
+import UserTable from './UserTable';
 
 const Users = ({ token }) => {
   const navigate = useNavigate();
@@ -21,11 +21,9 @@ const Users = ({ token }) => {
     return state.users.status;
   });
   const total = useSelector(state => {
-    console.info(state);
     return state.users.total;
   });
 
-  // 토큰 없다면 /login로 리다이렉트
   useEffect(() => {
     if (!token.getToken()) {
       navigate('/login');
@@ -50,14 +48,16 @@ const Users = ({ token }) => {
   };
 
   if (status && !users) return <div>{status}</div>;
+
   return (
     <>
       <div>라라라</div>
-      <ul>
+      {/* <ul>
         {users.map(user => (
-          <UserDetail key={user.uuid + user.id} user={user} />
+          <UserTable key={user.uuid + user.id} user={user} />
         ))}
-      </ul>
+      </ul> */}
+      <UserTable users={users} />
       <ul>
         {pageNumbers.map((p, i) => (
           <button onClick={() => handlePage(p)} key={i}>
