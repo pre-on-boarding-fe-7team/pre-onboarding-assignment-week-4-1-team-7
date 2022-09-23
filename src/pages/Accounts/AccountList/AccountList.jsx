@@ -16,6 +16,7 @@ import AccountPagination from '../AccountPagination';
 import { getUsersFetch } from '../../../modules/userSlice';
 import Earning from '../../../components/Earning/Earning';
 import useQeuryStringParams from '../../../common/hooks/useQeuryStringParams';
+import { useNavigate } from 'react-router-dom';
 
 const header = [
   '고객명',
@@ -34,6 +35,14 @@ const AccountList = () => {
   const accounts = useSelector(state => state.accounts);
   const users = useSelector(state => state.users);
   const [{ _page, q, broker_id, is_active, status }] = useQeuryStringParams();
+  const navigate = useNavigate();
+
+  const handleClickAccountNumber = accounetNumber => {
+    // console.info(accounts.data.data.number);
+    // const seletUserData = accounts.filter(accounts => accounts.data.data.number === accounetNumber);
+    // navigate(`/accounts/${accounetNumber}`, { state: { seletUserData } });
+    navigate(`/accounts/${accounetNumber}`);
+  };
 
   useEffect(() => {
     dispatch(getUsersFetch());
@@ -64,7 +73,9 @@ const AccountList = () => {
                   <TableRow key={account.uuid}>
                     <TableCell>{makeGetUserName(users.users)(account.id)}</TableCell>
                     <TableCell>{getBrokerName(account.broker_id)}</TableCell>
-                    <TableCell>{getAccountFormat(account.broker_id, account.number)}</TableCell>
+                    <TableCell onClick={() => handleClickAccountNumber(account.number)}>
+                      {getAccountFormat(account.broker_id, account.number)}
+                    </TableCell>
                     <TableCell>{getAccountStatus(account.status)}</TableCell>
                     <TableCell>{account.name}</TableCell>
                     <TableCell sx={{ textAlign: 'right' }}>
