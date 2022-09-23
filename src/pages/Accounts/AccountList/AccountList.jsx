@@ -20,7 +20,7 @@ const header = [
   'created_at',
 ];
 
-const AccountList = ({ items }) => {
+const AccountList = () => {
   const dispatch = useDispatch();
   const accounts = useSelector(state => state.accounts);
   const users = useSelector(state => state.users.users);
@@ -30,7 +30,7 @@ const AccountList = ({ items }) => {
   const [searchParams] = useSearchParams();
   const _page = Number.parseInt(searchParams.get('page') || 1);
   const q = searchParams.get('q');
-  const broker_id = searchParams.get('broker');
+  const broker_id = searchParams.get('broker_id');
   const is_active = searchParams.get('active');
 
   useEffect(() => {
@@ -57,7 +57,7 @@ const AccountList = ({ items }) => {
                 </TableRow>
               </TableHead>
               <TableBody>
-                {items.map(account => (
+                {accounts.data.data.map(account => (
                   <TableRow key={account.uuid}>
                     <TableCell>{getUserName(account.id)}</TableCell>
                     <TableCell>{account.broker_id}</TableCell>

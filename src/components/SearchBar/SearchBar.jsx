@@ -44,17 +44,16 @@ const SearchBar = ({ title, onSearch, setMenu }) => {
   //   const changeHandler = e => {
   //     setQuery(e.target.value);
   //   };
-  const broker_id = searchParams.get('broker');
-  const is_active = searchParams.get('active');
+  console.info(searchParams);
+  // const broker_id = searchParams.get('broker');
+  // const is_active = searchParams.get('active');
 
+  const selectoption = ({ target: { value } }) => {
+    setSearchParams({ page: 1, broker_id: value });
+  };
   const searchHandler = ({ target: { value }, key }) => {
     if (key !== 'Enter') return;
-
-    setSearchParams({ page: 1, q: value, broker_id, is_active });
-  };
-
-  const selectoption = e => {
-    setMenu(e.target.value);
+    setSearchParams({ page: 1, q: value });
   };
 
   return (
