@@ -14,11 +14,5 @@ const accountsSlice = createSlice({
   extraReducers: createExtraReducers(fetchAccounts),
 });
 
-const getAccounts = state => state.accounts;
-const getFilterBroker = broker_id =>
-  createSelector(getAccounts, accounts =>
-    accounts.filter(account => account.broker_id === broker_id)
-  );
-
-export { fetchAccounts, getFilterBroker };
+export { fetchAccounts };
 export default accountsSlice;
