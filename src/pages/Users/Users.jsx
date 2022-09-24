@@ -48,7 +48,11 @@ const Users = ({ token }) => {
 
   const handleClickDelete = id => {
     dispatch(deleteUsersThunk(id));
-    dispatch(getUsersThunk(page, limit));
+    if (searchParams.get('query') === null) {
+      dispatch(getUsersThunk(searchParams.get('page'), limit));
+    } else {
+      dispatch(searchUsersThunk(searchParams.get('query'), 1, 10));
+    }
   };
 
   //검색
@@ -73,7 +77,6 @@ const Users = ({ token }) => {
           <button>검색</button>
         </form>
 
-        <div>라라라</div>
         <UserList users={users.data} handleClickDelete={handleClickDelete} />
         <ul>
           {pageNumbers.map((p, i) => (
