@@ -41,7 +41,7 @@ export const createExtraReducers = fetchAccounts => builder => {
 };
 
 export const UsersReducerUtils = {
-  initial: (data = null, total = null) => ({
+  initial: ({ data = null, total = null } = {}) => ({
     loading: false,
     data,
     total,
@@ -53,7 +53,7 @@ export const UsersReducerUtils = {
     loading: true,
     error: null,
   }),
-  success: (data, total) => ({
+  success: ({ data, total }) => ({
     data,
     total,
     loading: false,
