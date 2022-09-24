@@ -7,7 +7,7 @@ class ApiService {
 
   getHeaders() {
     // const token = this.tokenStorage.getToken();
-    return `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ2FtaWwuY29tIiwiaWF0IjoxNjYzOTg2ODgyLCJleHAiOjE2NjM5OTA0ODIsInN1YiI6IjEwMSJ9.-qjp3r2HrRBNeGlHMmrk7GJKALgb7gNR-xDD_9mhy6g`;
+    return `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ21haWwuY29tIiwiaWF0IjoxNjY0MDE4ODAyLCJleHAiOjE2NjQwMjI0MDIsInN1YiI6IjEwMSJ9.Mefwvat_wM7lJ6yHBtejpqWKeLajFZqqTdhbQT2ni7A`;
     //`Bearer ${token}`
   }
 
@@ -52,6 +52,31 @@ class ApiService {
       params,
     });
     return { data: response.data, total: response.headers['x-total-count'] };
+  }
+
+  async getAccountApi(params) {
+    const response = await axios.get(`/accounts`, {
+      headers: {
+        Authorization: this.getHeaders(),
+      },
+      params,
+    });
+
+    return response.data[0];
+  }
+
+  // accounts.id가 고유하다는 가정하에 구현
+  async updateAccountsApi(params) {
+    const response = await axios.put(
+      `/accounts/${params.id}`,
+      { ...params },
+      {
+        headers: {
+          Authorization: this.getHeaders(),
+        },
+      }
+    );
+    return response.data;
   }
 }
 
