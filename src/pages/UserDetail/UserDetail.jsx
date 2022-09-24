@@ -3,6 +3,7 @@ import { Container } from '@mui/system';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
+import Loading from '../../components/Loading/Loading';
 import { getUserAccountThunk } from '../../modules/accountsSlice';
 import { getUserDetailThunk } from '../../modules/userDetailSlice';
 import UserAccountList from './UserAccountList';
@@ -22,7 +23,7 @@ const UserDetail = () => {
     dispatch(getUserDetailThunk(userId.id));
   }, [dispatch, userId]);
 
-  if (userData.loading || userAccount.loading) return <>loading</>;
+  if (userData.loading || userAccount.loading) return <Loading />;
   if (userData.data && userAccount.data)
     return (
       <Container>

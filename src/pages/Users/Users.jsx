@@ -2,6 +2,7 @@ import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { ROUTE } from '../../common/utils/constant';
+import Loading from '../../components/Loading/Loading';
 import { deleteUsersThunk, getUsersThunk, searchUsersThunk } from '../../modules/usersSlice';
 import UserList from './UserList';
 
@@ -65,28 +66,26 @@ const Users = ({ token }) => {
     setSearchParams({ page: 1, limit: 10, query: search !== '' ? search : query }); //setSearchParams-> 1페이지, 리밋재설정
     dispatch(searchUsersThunk(search, 1, 10)); //첫검색->이후페이지네이션
   };
-
   if (users.loading) {
-    <>loading...</>;
+    return <Loading />;
   }
-  if (users.data)
-    return (
-      <>
-        <form onSubmit={handleSearch}>
-          <input ref={inputRef} type="text" placeholder="Search..." />
-          <button>검색</button>
-        </form>
+  return (
+    <>
+      <form onSubmit={handleSearch}>
+        <input ref={inputRef} type="text" placeholder="Search..." />
+        <button>검색</button>
+      </form>
 
-        <UserList users={users.data} handleClickDelete={handleClickDelete} />
-        <ul>
-          {pageNumbers.map((p, i) => (
-            <button onClick={() => handlePage(p)} key={i}>
-              {p}
-            </button>
-          ))}
-        </ul>
-      </>
-    );
+      <UserList users={users.data} handleClickDelete={handleClickDelete} />
+      <ul>
+        {pageNumbers.map((p, i) => (
+          <button onClick={() => handlePage(p)} key={i}>
+            {p}
+          </button>
+        ))}
+      </ul>
+    </>
+  );
 };
 
 export default Users;
