@@ -1,12 +1,4 @@
-import {
-  Box,
-  Card,
-  CardContent,
-  InputAdornment,
-  SvgIcon,
-  TextField,
-  Typography,
-} from '@mui/material';
+import { Box, Card, CardContent, InputAdornment, SvgIcon, TextField } from '@mui/material';
 import SearchIcon from '@mui/icons-material/Search';
 import { getStatus, jsonToArray } from '../../common/utils/field.util';
 import { getBrokers } from '../../common/utils/field.util';
@@ -46,23 +38,10 @@ const SearchBar = ({ title }) => {
 
   return (
     <Box>
-      <Box
-        sx={{
-          alignItems: 'center',
-          display: 'flex',
-          justifyContent: 'space-between',
-          flexWrap: 'wrap',
-          m: -1,
-        }}
-      >
-        <Typography sx={{ m: 1 }} variant="h4">
-          {title}
-        </Typography>
-      </Box>
       <Box sx={{ mt: 3 }}>
         <Card>
           <CardContent>
-            <Box sx={{ maxWidth: 200 }}>
+            <Box style={{ display: 'flex' }}>
               <TextField
                 fullWidth
                 InputProps={{

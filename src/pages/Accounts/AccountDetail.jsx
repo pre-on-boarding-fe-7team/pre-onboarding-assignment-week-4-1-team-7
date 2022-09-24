@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { Box, Card, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import { Box, Card, Table, TableCell, TableHead, TableRow, TableBody } from '@mui/material';
 import {
   boolToIcon,
   getAccountFormat,
@@ -12,30 +12,32 @@ import {
   makeGetUserName,
 } from '../../common/utils/field.util';
 import Earning from '../../components/Earning/Earning';
-import { getUsersFetch } from '../../modules/userSlice';
-import { fetchAccounts } from '../../modules/accountsSlice';
-import useQeuryStringParams from '../../common/hooks/useQeuryStringParams';
+import { getUsersThunk } from '../../modules/usersSlice';
+import { getAccountFetch } from '../../modules/accountsSlice';
+
 import { useParams } from 'react-router-dom';
 import { header } from '../../common/utils/constant';
-import { useSearchParams } from 'react-router-dom';
 
 const AccountDetail = () => {
   let { id } = useParams();
   console.info(id);
-  const [searchParams] = useSearchParams();
-  console.info(searchParams); // ▶ URLSearchParams {}
-
   const dispatch = useDispatch();
   const accounts = useSelector(state => state.accounts);
-  const [{ _page, q, broker_id, is_active, status }] = useQeuryStringParams();
+
+  // const [{ _page, q, broker_id, is_active, status }] = useQeuryStringParams();
+
   useEffect(() => {
-    dispatch(getUsersFetch());
+    dispatch(getUsersThunk());
   }, [dispatch]);
 
   useEffect(() => {
-    dispatch(fetchAccounts({ _page, q, broker_id, is_active, status }));
-  }, [dispatch, _page, q, broker_id, is_active, status]);
+    dispatch(getAccountFetch());
+  }, [dispatch]);
 
+  const matchItems = accounts.data?.data?.find(itemsdata => {
+    if (itemsdata?.number === id) return true;
+  });
+  console.info(matchItems);
   return (
     <Box sx={{ mt: 3 }}>
       <Card>
@@ -49,30 +51,22 @@ const AccountDetail = () => {
               </TableRow>
             </TableHead>
             <TableBody>
-              <TableRow key={accounts.data?.data[id]?.uuid}>
-                <TableCell>{makeGetUserName(accounts.data?.data[id]?.id)}</TableCell>
-                <TableCell>{getBrokerName(accounts.data?.data[id]?.broker_id)}</TableCell>
-                <TableCell>
-                  {getAccountFormat(
-                    accounts.data?.data[id]?.broker_id,
-                    accounts.data?.data[id]?.number
-                  )}
-                </TableCell>
-                <TableCell>{getAccountStatus(accounts.data?.data[id]?.status)}</TableCell>
-                <TableCell>{accounts.data?.data[id]?.name}</TableCell>
+              <TableRow key={matchItems?.number}>
+                <TableCell>{makeGetUserName(matchItems?.id)}</TableCell>
+                <TableCell>{getBrokerName(matchItems?.broker_id)}</TableCell>
+                <TableCell>{getAccountFormat(matchItems?.broker_id, matchItems?.number)}</TableCell>
+                <TableCell>{getAccountStatus(matchItems?.status)}</TableCell>
+                <TableCell>{matchItems?.name}</TableCell>
                 <TableCell sx={{ textAlign: 'right' }}>
-                  <Earning
-                    assets={accounts.data?.data[id]?.assets}
-                    payments={accounts.data?.data[id]?.payments}
-                  >
-                    {getCurrency(accounts.data?.data[id]?.assets)}
+                  <Earning assets={matchItems?.assets} payments={matchItems?.payments}>
+                    {getCurrency(matchItems?.assets)}
                   </Earning>
                 </TableCell>
                 <TableCell sx={{ textAlign: 'right' }}>
-                  {getCurrency(accounts.data?.data[id]?.payments)}
+                  {getCurrency(matchItems?.payments)}
                 </TableCell>
-                <TableCell>{boolToIcon(accounts.data?.data[id]?.is_active)}</TableCell>
-                <TableCell>{getDateFormat(accounts.data?.data[id]?.created_at)}</TableCell>
+                <TableCell>{boolToIcon(matchItems?.is_active)}</TableCell>
+                <TableCell>{getDateFormat(matchItems?.created_at)}</TableCell>
               </TableRow>
             </TableBody>
           </Table>
