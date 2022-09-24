@@ -3,14 +3,14 @@ import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { convertAccountInfo, makeGetUserName } from '../../../common/utils/field.util';
 import Loading from '../../../components/Loading/Loading';
-import { getAllUsersThunk } from '../../../modules/usersSlice';
+import { getUserDetailThunk } from '../../../modules/userDetailSlice';
 
 const Account = ({ data: account }) => {
   const dispatch = useDispatch();
   const { data, loading, error } = useSelector(state => state.users);
 
   useEffect(() => {
-    dispatch(getAllUsersThunk({ id: account.user_id }));
+    dispatch(getUserDetailThunk(account.user_id));
   }, [dispatch, account.user_id]);
 
   if (loading) return <Loading />;
