@@ -1,4 +1,4 @@
-import { useLocation } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
@@ -16,18 +16,22 @@ const Sider = () => {
     <SiderBar>
       <StyledDrawer variant="permanent">
         <List component="nav">
-          <ListBtn className={`${pathRoute === `accounts` ? 'active_nav' : ''}`}>
-            <ListItemIcon>
-              <ShoppingCartIcon />
-            </ListItemIcon>
-            <ListItemText primary="계좌목록" />
-          </ListBtn>
-          <ListBtn className={`${pathRoute === `users` ? 'active_nav' : ''}`}>
-            <ListItemIcon>
-              <PeopleIcon />
-            </ListItemIcon>
-            <ListItemText primary="사용자" />
-          </ListBtn>
+          <SideLink to="/accounts">
+            <ListBtn className={`${pathRoute === `accounts` ? 'active_nav' : ''}`}>
+              <ListItemIcon>
+                <ShoppingCartIcon />
+              </ListItemIcon>
+              <ListItemText primary="계좌목록" />
+            </ListBtn>
+          </SideLink>
+          <SideLink to="/users">
+            <ListBtn className={`${pathRoute === `users` ? 'active_nav' : ''}`}>
+              <ListItemIcon>
+                <PeopleIcon />
+              </ListItemIcon>
+              <ListItemText primary="사용자" />
+            </ListBtn>
+          </SideLink>
         </List>
       </StyledDrawer>
     </SiderBar>
@@ -53,5 +57,16 @@ const StyledDrawer = styled(Drawer)`
 const ListBtn = styled(ListItemButton)`
   &.active_nav {
     background: rgb(85, 108, 214, 0.6);
+  }
+`;
+
+const SideLink = styled(Link)`
+  color: black;
+  text-decoration: none;
+  outline: none;
+  &:hover,
+  &:active {
+    text-decoration: none;
+    color: black;
   }
 `;
