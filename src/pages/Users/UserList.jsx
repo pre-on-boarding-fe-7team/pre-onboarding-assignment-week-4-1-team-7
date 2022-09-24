@@ -12,6 +12,7 @@ import {
 import findUser from '../../common/utils/findUser';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserSettingThunk } from '../../modules/userSettingSlice';
+import { maskingName, maskingPhone } from '../../common/utils/masking';
 
 const UserList = ({ users }) => {
   const navigate = useNavigate();
@@ -35,8 +36,13 @@ const UserList = ({ users }) => {
               <TableRow>
                 <TableCell>이름</TableCell>
                 <TableCell align="right">이메일</TableCell>
+                <TableCell align="right">성별코드</TableCell>
+                <TableCell align="right">생년월일</TableCell>
+                <TableCell align="right">휴대폰 번호</TableCell>
+                <TableCell align="right">최근 로그인</TableCell>
                 <TableCell align="right">활성화 여부</TableCell>
                 <TableCell align="right">임직원 계좌 여부</TableCell>
+                <TableCell align="right">가입일</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -44,6 +50,7 @@ const UserList = ({ users }) => {
                 if (value.id === 101) return <></>;
 
                 let trueFalse = findUser(value.uuid, userSetting.data);
+
                 return (
                   <TableRow key={value.id}>
                     <TableCell
@@ -51,11 +58,16 @@ const UserList = ({ users }) => {
                         handleClickUserName(value.id, trueFalse);
                       }}
                     >
-                      {value.name}
+                      {maskingName(value.name)}
                     </TableCell>
                     <TableCell align="right">{value.email}</TableCell>
+                    <TableCell align="right">{value.gender_origin}</TableCell>
+                    <TableCell align="right">{value.birth_date.slice(0, 10)}</TableCell>
+                    <TableCell align="right">{maskingPhone(value.phone_number)}</TableCell>
+                    <TableCell align="right">{value.last_login.slice(0, 10)}</TableCell>
                     <TableCell align="right">{trueFalse.is_active ? '🟢' : '🔴'}</TableCell>
                     <TableCell align="right">{trueFalse.is_staff ? '🟢' : '🔴'}</TableCell>
+                    <TableCell align="right">{value.created_at.slice(0, 10)}</TableCell>
                   </TableRow>
                 );
               })}
