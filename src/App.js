@@ -27,9 +27,11 @@ function App({ auth, token }) {
 
   return (
     <>
-      {isLogin && <Header email={auth.email} logoutHandler={logoutHandler} isLogin={isLogin} />}
+      {auth.isLogin() && (
+        <Header email={auth.email} logoutHandler={logoutHandler} isLogin={isLogin} />
+      )}
       <Box>
-        {isLogin && <Sider />}
+        {auth.isLogin() && <Sider />}
         <Div>
           <Routes>
             <Route path={ROUTE.LOGIN} element={<Login auth={auth} token={token} />} />

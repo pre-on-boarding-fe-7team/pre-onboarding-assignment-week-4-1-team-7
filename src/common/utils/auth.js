@@ -20,6 +20,10 @@ class Auth {
     this.tokenStorage.clearToken();
     this.email = '';
   }
+
+  isLogin() {
+    return this.tokenStorage.getToken() ? true : false;
+  }
 }
 
 export default Auth;
