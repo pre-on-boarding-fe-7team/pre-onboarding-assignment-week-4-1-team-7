@@ -3,7 +3,7 @@ import { Container } from '@mui/system';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useParams } from 'react-router-dom';
-import { getUserAccountThunk } from '../../modules/userAccoutSlice';
+import { getUserAccountThunk } from '../../modules/accountsSlice';
 import { getUserDetailThunk } from '../../modules/userDetailSlice';
 import UserAccountList from './UserAccountList';
 import UserForm from './UserForm';
@@ -11,7 +11,7 @@ import UserForm from './UserForm';
 const UserDetail = () => {
   const dispatch = useDispatch();
   const userId = useParams();
-  const userAccount = useSelector(state => state.userAccount);
+  const userAccount = useSelector(state => state.accounts);
   const userData = useSelector(state => state.user);
 
   useEffect(() => {

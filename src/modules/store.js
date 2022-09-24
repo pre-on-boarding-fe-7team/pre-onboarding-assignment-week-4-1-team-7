@@ -1,7 +1,6 @@
 import { configureStore } from '@reduxjs/toolkit';
 import { createLogger } from 'redux-logger';
 import accountsSlice from './accountsSlice';
-import userAccoutSlice from './userAccoutSlice';
 import userDetailSlice from './userDetailSlice';
 import userSettingSlice from './userSettingSlice';
 import usersSlice from './usersSlice';
@@ -14,7 +13,6 @@ const store = configureStore({
     users: usersSlice,
     userSetting: userSettingSlice,
     accounts: accountsSlice,
-    userAccount: userAccoutSlice,
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware().concat(logger),
 });
