@@ -1,6 +1,5 @@
 export const ROUTE = {
-  MAIN: '/',
-  LOGIN: '/login',
+  LOGIN: '/',
   USERS: '/users',
   USERS_DETAIL: '/users/:id',
   ACCOUNTS: '/accounts',
