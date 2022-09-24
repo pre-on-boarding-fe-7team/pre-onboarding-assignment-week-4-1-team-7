@@ -8,9 +8,9 @@ import {
   TableRow,
   Paper,
 } from '@mui/material';
-import findUser from '../../common/utils/findUser';
 import { useSelector, useDispatch } from 'react-redux';
 import { getUserSettingFetch } from '../../modules/userSettingSlice';
+import { findUser } from '../../common/utils/field.util';
 
 const UserTable = ({ users }) => {
   const dispatch = useDispatch();

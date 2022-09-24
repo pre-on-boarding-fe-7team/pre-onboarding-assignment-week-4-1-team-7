@@ -9,10 +9,10 @@ import {
   TableHead,
   Paper,
 } from '@mui/material';
-import findUser from '../../common/utils/findUser';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserSettingThunk } from '../../modules/userSettingSlice';
 import { maskingName, maskingPhone } from '../../common/utils/masking';
+import { findUser } from '../../common/utils/field.util';
 
 const UserList = ({ users }) => {
   const navigate = useNavigate();
