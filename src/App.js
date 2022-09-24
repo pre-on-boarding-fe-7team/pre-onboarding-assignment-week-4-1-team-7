@@ -14,7 +14,7 @@ import UserDetail from './pages/UserDetail/UserDetail';
 function App({ auth, token }) {
   return (
     <>
-      <Header logout={auth.logout} isLogin={token.getToken} />
+      <Header auth={auth} isLogin={token.getToken} />
       <Box>
         <Sider />
         <Div>
