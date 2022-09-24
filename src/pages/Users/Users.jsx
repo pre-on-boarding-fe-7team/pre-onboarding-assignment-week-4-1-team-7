@@ -15,6 +15,7 @@ const Users = ({ token }) => {
   const query = searchParams.get('query');
 
   const users = useSelector(state => state.users);
+  console.info(users);
 
   useEffect(() => {
     if (!token.getToken()) {
@@ -68,7 +69,7 @@ const Users = ({ token }) => {
         </form>
 
         <div>라라라</div>
-        <UserList users={users.data} />
+        <UserList users={users.data.data} />
         <ul>
           {pageNumbers.map((p, i) => (
             <button onClick={() => handlePage(p)} key={i}>
