@@ -17,6 +17,12 @@ export const searchUsersThunk = createAsyncThunk(
   async (query, page, limit) =>
     await apiservice.searchUsersApi({ q: query, _page: page, _limit: limit })
 );
+
+export const deleteUsersThunk = createAsyncThunk(
+  'usersSlice/deleteUsersThunk',
+  async id => await apiservice.deleteUser(id)
+);
+
 //slice
 const usersSlice = createSlice({
   name: 'users',
@@ -55,6 +61,16 @@ const usersSlice = createSlice({
       state.total = action.payload.total;
     },
     [getAllUsersThunk.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+    [deleteUsersThunk.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [deleteUsersThunk.fulfilled]: (state, action) => {
+      state.loading = false;
+    },
+    [deleteUsersThunk.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error;
     },
