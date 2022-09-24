@@ -4,6 +4,7 @@ export const ROUTE = {
   USERS: '/users',
   USERS_DETAIL: '/users/:id',
   ACCOUNTS: '/accounts',
+  ACCOUNT_DETAIL: '/account/:uuid',
   NOT_FOUND: '*',
 };
 

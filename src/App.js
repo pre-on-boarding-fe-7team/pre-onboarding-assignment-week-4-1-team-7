@@ -9,11 +9,12 @@ import Header from './components/Header';
 import Sider from './components/Sider';
 import Footer from './components/Footer';
 import { Box, Div } from './App.style';
+import AccountDetail from './pages/AccountsDetail/AccountDetail';
 
 function App({ auth, token }) {
   return (
     <>
-      <Header />
+      <Header logout={auth.logout} isLogin={token.getToken} />
       <Box>
         <Sider />
         <Div>
@@ -22,6 +23,7 @@ function App({ auth, token }) {
             <Route path={ROUTE.LOGIN} element={<Login auth={auth} token={token} />} />
             <Route path={ROUTE.USERS} element={<Users token={token} />} />
             <Route path={ROUTE.ACCOUNTS} element={<Accounts />} />
+            <Route path={ROUTE.ACCOUNT_DETAIL} element={<AccountDetail />} />
             <Route path={ROUTE.NOT_FOUND} element={<NotFound />} />
           </Routes>
           <Footer />
