@@ -1,6 +1,7 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { ROUTE } from '../../common/utils/constant';
 import { getUsersThunk, searchUsersThunk } from '../../modules/usersSlice';
 import UserList from './UserList';
 
@@ -18,7 +19,7 @@ const Users = ({ token }) => {
 
   useEffect(() => {
     if (!token.getToken()) {
-      navigate('/login');
+      navigate(ROUTE.LOGIN);
     }
   });
 

@@ -1,5 +1,5 @@
 export const ROUTE = {
-  LOGIN: '/login',
+  LOGIN: '/',
   USERS: '/users',
   USERS_DETAIL: '/users/:id',
   ACCOUNTS: '/accounts',
