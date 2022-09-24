@@ -5,16 +5,14 @@ import { reducerUtils } from '../common/utils/asyncUtils';
 //action Fn
 export const getUsersThunk = createAsyncThunk(
   'usersSlice/getUsersThunk',
-  async (page, limit) => await apiservice.getUsersApi({ page, limit })
+  async (page, limit) => await apiservice.getUsersApi({ _page: page, _limit: limit })
 );
 
 export const searchUsersThunk = createAsyncThunk(
-  'userSlice/searchUsersFetch',
-  async (query, page, limit) => {
-    await apiservice.searchUsersApi(query, page, limit);
-  }
+  'usersSlice/searchUsersThunk',
+  async (query, page, limit) =>
+    await apiservice.searchUsersApi({ q: query, _page: page, _limit: limit })
 );
-
 //slice
 const usersSlice = createSlice({
   name: 'users',
@@ -28,11 +26,19 @@ const usersSlice = createSlice({
       state.data = action.payload.data;
       state.total = action.payload.total;
     },
+    [getUsersThunk.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+    [searchUsersThunk.pending]: (state, action) => {
+      state.loading = true;
+    },
     [searchUsersThunk.fulfilled]: (state, action) => {
+      state.loading = false;
       state.data = action.payload.data;
       state.total = action.payload.total;
     },
-    [getUsersThunk.rejected]: (state, action) => {
+    [searchUsersThunk.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error;
     },

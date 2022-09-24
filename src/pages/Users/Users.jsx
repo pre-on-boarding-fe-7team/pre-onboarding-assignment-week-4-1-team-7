@@ -51,9 +51,9 @@ const Users = ({ token }) => {
     event.preventDefault();
     const search = inputRef.current.value;
     if (search === '') return;
-    dispatch(searchUsersThunk(search)); //첫검색때는 검색어만 보낸다
-    //setSearchParams-> 1페이지, 리밋재설정
-    setSearchParams({ page: 1, limit: 10, query: search !== '' ? search : query });
+
+    setSearchParams({ page: 1, limit: 10, query: search !== '' ? search : query }); //setSearchParams-> 1페이지, 리밋재설정
+    dispatch(searchUsersThunk(search, 1, 10)); //첫검색->이후페이지네이션
   };
 
   if (users.loading) {
