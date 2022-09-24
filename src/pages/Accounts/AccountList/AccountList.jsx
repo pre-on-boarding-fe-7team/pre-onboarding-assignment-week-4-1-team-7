@@ -13,7 +13,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchAccounts } from '../../../modules/accountsSlice';
 import AccountPagination from '../AccountPagination';
-import { getUsersFetch } from '../../../modules/userSlice';
+import { getUsersThunk } from '../../../modules/usersSlice';
 import Earning from '../../../components/Earning/Earning';
 import useQeuryStringParams from '../../../common/hooks/useQeuryStringParams';
 import { useNavigate } from 'react-router-dom';
@@ -42,17 +42,16 @@ const AccountList = () => {
   };
 
   useEffect(() => {
-    dispatch(getUsersFetch());
+    dispatch(getUsersThunk());
   }, [dispatch]);
 
   useEffect(() => {
     dispatch(fetchAccounts({ _page, q, broker_id, is_active, status }));
   }, [dispatch, _page, q, broker_id, is_active, status]);
 
-  // TODO users.status = success
-  if (accounts.loading) return <Loading />;
-  if (accounts.error) return <p>에러</p>;
-  if (accounts.data && users.users)
+  if (accounts.loading || users.loading) return <Loading />;
+  if (accounts.error || users.error) return <p>에러</p>;
+  if (accounts.data && users.data)
     return (
       <Box sx={{ mt: 3 }}>
         <Card>
@@ -68,7 +67,7 @@ const AccountList = () => {
               <TableBody>
                 {accounts.data.data.map(account => (
                   <TableRow key={account.uuid}>
-                    <TableCell>{makeGetUserName(users.users)(account.id)}</TableCell>
+                    <TableCell>{makeGetUserName(users.data)(account.id)}</TableCell>
                     <TableCell>{getBrokerName(account.broker_id)}</TableCell>
                     <TableCell onClick={() => handleClickAccountNumber(account.number)}>
                       {getAccountFormat(account.broker_id, account.number)}

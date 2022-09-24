@@ -7,19 +7,16 @@ class ApiService {
 
   getHeaders() {
     // const token = this.tokenStorage.getToken();
-    return `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imt5eUBuYXZlci5jb20iLCJpYXQiOjE2NjM5ODMwODIsImV4cCI6MTY2Mzk4NjY4Miwic3ViIjoiMTAxIn0.VCs8klvAtQzURgO48WicOdnwy71YI3WYpcyJ25waG7o`;
+    return `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ2FtaWwuY29tIiwiaWF0IjoxNjYzOTg2ODgyLCJleHAiOjE2NjM5OTA0ODIsInN1YiI6IjEwMSJ9.-qjp3r2HrRBNeGlHMmrk7GJKALgb7gNR-xDD_9mhy6g`;
     //`Bearer ${token}`
   }
 
-  async getUsersApi(page, limit) {
+  async getUsersApi(params) {
     const response = await axios.get(`/users`, {
       headers: {
         Authorization: this.getHeaders(),
       },
-      params: {
-        _page: page,
-        _limit: limit,
-      },
+      params,
     });
     return { data: response.data, total: response.headers['x-total-count'] };
   }
@@ -47,32 +44,15 @@ class ApiService {
     return response.data;
   }
 
-  async getAccountsApi() {
+  async getAccountsApi(params) {
     const response = await axios.get(`/accounts`, {
       headers: {
         Authorization: this.getHeaders(),
       },
+      params,
     });
-    return response.data;
+    return { data: response.data, total: response.headers['x-total-count'] };
   }
 }
 
-// export default ApiService;
-// const token =
-//   'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InN1amluQGdtYWlsLmNvbSIsImlhdCI6MTY2Mzk0OTc0NSwiZXhwIjoxNjYzOTUzMzQ1LCJzdWIiOiIxMDEifQ.74m0WR8hiEk4Hz_WgXHrQlqjdbZE-rBK9vynNhXD7RI';
-
-// const api = axios.create({
-//   headers: {
-//     Authorization: `Bearer ${token}`,
-//   },
-// });
-
-// export const getAccountsApi = async params => {
-//   const response = await api.get(`/accounts`, { params });
-//   return { data: response.data, total: response.headers['x-total-count'] };
-// };
-
-// export const getUsersApi = async () => {
-//   const response = await api.get(`/users`);
-//   return response.data;
-// };
+export default ApiService;

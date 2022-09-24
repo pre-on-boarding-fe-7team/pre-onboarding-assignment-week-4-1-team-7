@@ -5,7 +5,7 @@ import { reducerUtils } from '../common/utils/asyncUtils';
 //action Fn
 export const getUsersThunk = createAsyncThunk(
   'usersSlice/getUsersThunk',
-  async (page, limit) => await apiservice.getUsersApi(page, limit)
+  async (page, limit) => await apiservice.getUsersApi({ page, limit })
 );
 
 export const searchUsersThunk = createAsyncThunk(

@@ -1,7 +1,7 @@
 import React from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
-import { getUsersFetch } from '../modules/userSlice';
+import { getUsersThunk } from '../modules/usersSlice';
 import styled from '@emotion/styled';
 import Typography from '@mui/material/Typography';
 import IconButton from '@mui/material/IconButton';
@@ -18,12 +18,12 @@ const title = {
 
 const Header = () => {
   const dispatch = useDispatch();
-  const accounts = useSelector(state => state.accounts);
+  const accounts = useSelector(state => state.users);
   const location = useLocation();
   const pathname = location.pathname.replace('/', '');
 
   useEffect(() => {
-    dispatch(getUsersFetch());
+    dispatch(getUsersThunk());
   }, [dispatch]);
 
   console.info();
