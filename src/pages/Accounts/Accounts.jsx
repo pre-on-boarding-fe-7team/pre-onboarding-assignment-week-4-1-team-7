@@ -5,7 +5,7 @@ import AccountList from './AccountList/AccountList';
 const Accounts = () => {
   return (
     <Container>
-      <SearchBar title="계좌 목록" />
+      <SearchBar />
       <AccountList />
     </Container>
   );

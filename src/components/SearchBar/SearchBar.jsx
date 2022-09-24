@@ -4,8 +4,9 @@ import { getStatus, jsonToArray } from '../../common/utils/field.util';
 import { getBrokers } from '../../common/utils/field.util';
 import { useEffect, useState } from 'react';
 import useQeuryStringParams from '../../common/hooks/useQeuryStringParams';
+import FilterSelect from '../FilterSelect/FilterSelect';
 
-const SearchBar = ({ title }) => {
+const SearchBar = () => {
   const [values, setValues] = useState({
     q: '',
     broker_id: '',
@@ -59,15 +60,11 @@ const SearchBar = ({ title }) => {
                 name="q"
                 value={values.q}
               />
-              <TextField
-                fullWidth
+              <FilterSelect
                 label="브로커명"
                 onChange={changeHandler}
-                select
-                SelectProps={{ native: true }}
                 name="broker_id"
                 value={values.broker_id}
-                variant="outlined"
               >
                 <option key="ALL_BROKER" value=""></option>
                 {jsonToArray(getBrokers()).map(option => (
@@ -75,42 +72,32 @@ const SearchBar = ({ title }) => {
                     {option.value}
                   </option>
                 ))}
-              </TextField>
-              <TextField
-                fullWidth
+              </FilterSelect>
+              <FilterSelect
                 label="계좌 활성화여부"
-                onChange={changeHandler}
-                select
-                SelectProps={{ native: true }}
+                changeHandler={changeHandler}
                 name="is_active"
                 value={values.is_active}
-                variant="outlined"
               >
-                <option key="ALL_ACTIVE" value=""></option>
                 <option key="true" value="true">
                   활성화
                 </option>
                 <option key="false" value="false">
                   비활성화
                 </option>
-              </TextField>
-              <TextField
-                fullWidth
+              </FilterSelect>
+              <FilterSelect
                 label="계좌 상태"
-                onChange={changeHandler}
-                select
-                SelectProps={{ native: true }}
+                changeHandler={changeHandler}
                 name="status"
                 value={values.status}
-                variant="outlined"
               >
-                <option key="ALL_STATUS" value=""></option>
                 {jsonToArray(getStatus()).map(option => (
                   <option key={option.value} value={option.value}>
                     {option.key}
                   </option>
                 ))}
-              </TextField>
+              </FilterSelect>
             </Box>
           </CardContent>
         </Card>
