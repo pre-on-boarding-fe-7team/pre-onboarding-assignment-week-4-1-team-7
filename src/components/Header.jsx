@@ -37,7 +37,7 @@ const Header = ({ auth, isLogin }) => {
             Logout
           </Typography>
         ) : (
-          <Link href="/login" color="inherit" variant="body2" underline="hover">
+          <Link href="/" color="inherit" variant="body2" underline="hover">
             Login
           </Link>
         )}
