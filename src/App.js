@@ -22,7 +22,7 @@ function App({ auth, token }) {
             <Route path={ROUTE.LOGIN} element={<Login auth={auth} token={token} />} />
             <Route path={ROUTE.USERS} element={<Users token={token} />} />
             <Route path={ROUTE.USERS_DETAIL} element={<UserDetail token={token} />} />
-            <Route path={ROUTE.ACCOUNTS} element={<Accounts />} />
+            <Route path={ROUTE.ACCOUNTS} element={<Accounts token={token} />} />
             <Route path={ROUTE.ACCOUNT_DETAIL} element={<AccountDetail />} />
             <Route path={ROUTE.NOT_FOUND} element={<NotFound />} />
           </Routes>

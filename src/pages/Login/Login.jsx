@@ -1,5 +1,6 @@
 import React, { useRef, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ROUTE } from '../../common/utils/constant';
 
 const Login = ({ auth, token }) => {
   const emailRef = useRef();
@@ -9,7 +10,7 @@ const Login = ({ auth, token }) => {
   // 토큰 있다면 /users로 리다이렉트
   useEffect(() => {
     if (token.getToken()) {
-      navigate('/users');
+      navigate(ROUTE.ACCOUNTS);
     }
   });
 
@@ -18,7 +19,7 @@ const Login = ({ auth, token }) => {
     const email = emailRef.current.value;
     const pw = pwRef.current.value;
     await auth.signIn(email, pw);
-    navigate('/users');
+    navigate(ROUTE.ACCOUNTS);
   };
 
   return (

@@ -17,6 +17,12 @@ export const searchUsersThunk = createAsyncThunk(
   async (query, page, limit) =>
     await apiservice.searchUsersApi({ q: query, _page: page, _limit: limit })
 );
+
+export const deleteUsersThunk = createAsyncThunk(
+  'usersSlice/deleteUsersThunk',
+  async id => await apiservice.deleteUser(id)
+);
+
 //slice
 const usersSlice = createSlice({
   name: 'users',
@@ -25,6 +31,7 @@ const usersSlice = createSlice({
     createExtraUsersReducers(getUsersThunk)(builder);
     createExtraUsersReducers(getAllUsersThunk)(builder);
     createExtraUsersReducers(searchUsersThunk)(builder);
+    createExtraUsersReducers(deleteUsersThunk)(builder);
   },
 });
 

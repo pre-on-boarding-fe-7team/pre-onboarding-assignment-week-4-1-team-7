@@ -12,9 +12,10 @@ import {
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserSettingThunk } from '../../modules/userSettingSlice';
 import { maskingName, maskingPhone } from '../../common/utils/masking';
+import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
 import { findUser } from '../../common/utils/field.util';
 
-const UserList = ({ users }) => {
+const UserList = ({ users, handleClickDelete }) => {
   const navigate = useNavigate();
   const dispatch = useDispatch();
   const userSetting = useSelector(state => state.userSetting);
@@ -43,6 +44,7 @@ const UserList = ({ users }) => {
                 <TableCell align="right">활성화 여부</TableCell>
                 <TableCell align="right">임직원 계좌 여부</TableCell>
                 <TableCell align="right">가입일</TableCell>
+                <TableCell align="right">삭제</TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -68,6 +70,11 @@ const UserList = ({ users }) => {
                     <TableCell align="right">{trueFalse.is_active ? '🟢' : '🔴'}</TableCell>
                     <TableCell align="right">{trueFalse.is_staff ? '🟢' : '🔴'}</TableCell>
                     <TableCell align="right">{value.created_at.slice(0, 10)}</TableCell>
+                    <TableCell align="right">
+                      <div onClick={() => handleClickDelete(value.id)}>
+                        <DeleteForeverIcon style={{ color: 'red', cursor: 'pointer' }} />
+                      </div>
+                    </TableCell>
                   </TableRow>
                 );
               })}

@@ -1,7 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { getUsersThunk, searchUsersThunk } from '../../modules/usersSlice';
+import { ROUTE } from '../../common/utils/constant';
+import { deleteUsersThunk, getUsersThunk, searchUsersThunk } from '../../modules/usersSlice';
 import UserList from './UserList';
 
 const Users = ({ token }) => {
@@ -19,7 +20,7 @@ const Users = ({ token }) => {
 
   useEffect(() => {
     if (!token.getToken()) {
-      navigate('/');
+      navigate(ROUTE.LOGIN);
     }
   });
 
@@ -46,6 +47,11 @@ const Users = ({ token }) => {
     dispatch(searchUsersThunk(inputRef.current.value, p, 10));
   };
 
+  const handleClickDelete = id => {
+    dispatch(deleteUsersThunk(id));
+    dispatch(getUsersThunk(page, limit));
+  };
+
   //검색
   const inputRef = useRef();
   const handleSearch = event => {
@@ -69,7 +75,7 @@ const Users = ({ token }) => {
         </form>
 
         <div>라라라</div>
-        <UserList users={users.data.data} />
+        <UserList users={users.data.data} handleClickDelete={handleClickDelete} />
         <ul>
           {pageNumbers.map((p, i) => (
             <button onClick={() => handlePage(p)} key={i}>
