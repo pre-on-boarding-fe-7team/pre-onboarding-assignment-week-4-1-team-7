@@ -5,8 +5,8 @@ const Footer = () => {
   return (
     <Typography variant="body2" color="text.secondary" align="center" style={{ padding: '20px 0' }}>
       {'Copyright © '}
-      <Link color="inherit" href="https://mui.com/">
-        Your Website
+      <Link color="inherit" href="http://localhost:3000/">
+        December and Company Inc.
       </Link>{' '}
       {new Date().getFullYear()}
       {'.'}
