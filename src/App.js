@@ -27,7 +27,7 @@ function App({ auth, token }) {
 
   return (
     <>
-      {isLogin && <Header logoutHandler={logoutHandler} isLogin={isLogin} />}
+      {isLogin && <Header email={auth.email} logoutHandler={logoutHandler} isLogin={isLogin} />}
       <Box>
         {isLogin && <Sider />}
         <Div>
