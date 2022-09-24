@@ -5,7 +5,7 @@ function useInputs(initialValue = null) {
 
   const onChange = useCallback(e => {
     const { name, value } = e.target;
-    setValues(values => ({ ...values, [name]: value }));
+    setValues(values => ({ [name]: value }));
   }, []);
 
   return [values, onChange, setValues];

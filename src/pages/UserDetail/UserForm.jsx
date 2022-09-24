@@ -14,9 +14,9 @@ import useInputs from '../../hooks/useInputs';
 
 const UserForm = ({ userData, userId }) => {
   const [isform, setIsform] = useState(false);
-  const [userValues, onChangeValues] = useInputs(userData.name);
+  const [userValues, onChangeValues] = useInputs({ name: userData.name });
   const { name } = userValues;
-  console.info(name);
+
   const handleClickUserPatch = () => {
     setIsform(!isform);
     apiservice.patchUserDataApi(userValues, userId);

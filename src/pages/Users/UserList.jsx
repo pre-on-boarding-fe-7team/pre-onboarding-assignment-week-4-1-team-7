@@ -22,7 +22,6 @@ const UserList = ({ users, handleClickDelete }) => {
   useEffect(() => {
     dispatch(getUserSettingThunk());
   }, [dispatch]);
-
   const handleClickUserName = (userId, trueFalse) => {
     const seletUserData = users.filter(users => users.id === userId);
     navigate(`/users/${userId}`, { state: { seletUserData, trueFalse } });

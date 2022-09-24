@@ -6,8 +6,7 @@ class ApiService {
   }
 
   getHeaders() {
-    const token = this.tokenStorage.getToken();
-    // return `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InF3ZXF3ZTEyQG5hdmVyLmNvbSIsImlhdCI6MTY2NDAyNzI4NCwiZXhwIjoxNjY0MDMwODg0LCJzdWIiOiIxMDQifQ.hinWIpVNQywA3gUVgyODTKuhloWrALDs-cdATuj7df0`;
+    const token = this.tokenStorage.getToken(); // return `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InF3ZXF3ZTEyQG5hdmVyLmNvbSIsImlhdCI6MTY2NDAyNzI4NCwiZXhwIjoxNjY0MDMwODg0LCJzdWIiOiIxMDQifQ.hinWIpVNQywA3gUVgyODTKuhloWrALDs-cdATuj7df0`;
     return `Bearer ${token}`;
   }
 
@@ -47,7 +46,7 @@ class ApiService {
       },
       params,
     });
-    console.info('@@', response.headers['x-total-count']);
+    // console.info('@@', response.headers['x-total-count']);
     return { data: response.data, total: response.headers['x-total-count'] };
   }
 

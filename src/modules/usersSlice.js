@@ -1,6 +1,6 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { apiservice } from '..';
-import { reducerUtils } from '../common/utils/asyncUtils';
+import { createExtraUsersReducers, UsersReducerUtils } from '../common/utils/async.utill';
 
 //action Fn
 export const getUsersThunk = createAsyncThunk(
@@ -26,54 +26,12 @@ export const deleteUsersThunk = createAsyncThunk(
 //slice
 const usersSlice = createSlice({
   name: 'users',
-  initialState: reducerUtils.initial(),
-  extraReducers: {
-    [getUsersThunk.pending]: (state, action) => {
-      state.loading = true;
-    },
-    [getUsersThunk.fulfilled]: (state, action) => {
-      state.loading = false;
-      state.data = action.payload.data;
-      state.total = action.payload.total;
-    },
-    [getUsersThunk.rejected]: (state, action) => {
-      state.loading = false;
-      state.error = action.error;
-    },
-    [searchUsersThunk.pending]: (state, action) => {
-      state.loading = true;
-    },
-    [searchUsersThunk.fulfilled]: (state, action) => {
-      state.loading = false;
-      state.data = action.payload.data;
-      state.total = action.payload.total;
-    },
-    [searchUsersThunk.rejected]: (state, action) => {
-      state.loading = false;
-      state.error = action.error;
-    },
-    [getAllUsersThunk.pending]: (state, action) => {
-      state.loading = true;
-    },
-    [getAllUsersThunk.fulfilled]: (state, action) => {
-      state.loading = false;
-      state.data = action.payload.data;
-      state.total = action.payload.total;
-    },
-    [getAllUsersThunk.rejected]: (state, action) => {
-      state.loading = false;
-      state.error = action.error;
-    },
-    [deleteUsersThunk.pending]: (state, action) => {
-      state.loading = true;
-    },
-    [deleteUsersThunk.fulfilled]: (state, action) => {
-      state.loading = false;
-    },
-    [deleteUsersThunk.rejected]: (state, action) => {
-      state.loading = false;
-      state.error = action.error;
-    },
+  initialState: UsersReducerUtils.initial(),
+  extraReducers: builder => {
+    createExtraUsersReducers(getUsersThunk)(builder);
+    createExtraUsersReducers(getAllUsersThunk)(builder);
+    createExtraUsersReducers(searchUsersThunk)(builder);
+    createExtraUsersReducers(deleteUsersThunk)(builder);
   },
 });
 

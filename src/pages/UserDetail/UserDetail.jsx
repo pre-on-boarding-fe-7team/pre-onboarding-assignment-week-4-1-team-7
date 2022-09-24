@@ -22,10 +22,6 @@ const UserDetail = () => {
     dispatch(getUserDetailThunk(userId.id));
   }, [dispatch, userId]);
 
-  //1. [?] 위의 함수가 실행되면서 이름이 바뀔 때 어떻게 store 안의 값을 바꿀지...?
-  //2. [?] 아래 ? 부분 너무 더러움 , 어떻게하면 깔끔하게 보일 수 있을지?
-  //3. [?] 왼쪽 폴더들 보면 메인은 userDetail인데 부가적인 것들이 지저분해보임 어떻게 통일하면 좋을까?
-
   if (userData.loading || userAccount.loading) return <>loading</>;
   if (userData.data && userAccount.data)
     return (
@@ -37,14 +33,16 @@ const UserDetail = () => {
           <Card>
             <Table>
               <TableHead>
-                <TableCell>계좌 목록</TableCell>
+                <TableRow>
+                  <TableCell>계좌 목록</TableCell>
+                </TableRow>
               </TableHead>
               <TableBody>
-                {userAccount.data.data.map((value, idx) => {
+                {userAccount.data.data.map(value => {
                   return (
-                    <TableRow>
+                    <TableRow key={value.number}>
                       <TableCell>
-                        <UserAccountList key={idx} userAccount={value} />
+                        <UserAccountList userAccount={value} />
                       </TableCell>
                     </TableRow>
                   );

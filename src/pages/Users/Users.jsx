@@ -74,7 +74,7 @@ const Users = ({ token }) => {
         </form>
 
         <div>라라라</div>
-        <UserList users={users.data} handleClickDelete={handleClickDelete} />
+        <UserList users={users.data.data} handleClickDelete={handleClickDelete} />
         <ul>
           {pageNumbers.map((p, i) => (
             <button onClick={() => handlePage(p)} key={i}>
