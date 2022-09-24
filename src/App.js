@@ -1,4 +1,4 @@
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import { ROUTE } from './common/utils/constant';
 import Login from './pages/Login/Login';
 import NotFound from './pages/NotFound/NotFound';
@@ -10,13 +10,26 @@ import Footer from './components/Footer';
 import { Box, Div } from './App.style';
 import AccountDetail from './pages/AccountsDetail/AccountDetail';
 import UserDetail from './pages/UserDetail/UserDetail';
+import { useEffect, useState } from 'react';
 
 function App({ auth, token }) {
+  const navigate = useNavigate();
+  const [isLogin, setIsLogin] = useState(false);
+  const logoutHandler = () => {
+    auth.logout();
+    setIsLogin(false);
+    navigate(ROUTE.LOGIN);
+  };
+
+  useEffect(() => {
+    setIsLogin(token.getToken());
+  }, [token.getToken()]);
+
   return (
     <>
-      {token.getToken() && <Header auth={auth} isLogin={token.getToken} />}
+      {isLogin && <Header logoutHandler={logoutHandler} isLogin={isLogin} />}
       <Box>
-        {token.getToken() && <Sider />}
+        {isLogin && <Sider />}
         <Div>
           <Routes>
             <Route path={ROUTE.LOGIN} element={<Login auth={auth} token={token} />} />

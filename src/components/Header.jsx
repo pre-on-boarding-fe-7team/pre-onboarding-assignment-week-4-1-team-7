@@ -4,7 +4,7 @@ import Typography from '@mui/material/Typography';
 import Toolbar from '@mui/material/Toolbar';
 import AppBar from '@mui/material/AppBar';
 import Link from '@mui/material/Link';
-import { useLocation, useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import { ROUTE } from '../common/utils/constant';
 
 const title = {
@@ -14,14 +14,9 @@ const title = {
   user: '사용자 정보',
 };
 
-const Header = ({ auth, isLogin }) => {
-  const navigate = useNavigate();
+const Header = ({ logoutHandler, isLogin }) => {
   const location = useLocation();
   const pathname = location.pathname.replace('/', '').split('/')[0];
-  const logoutHandler = () => {
-    auth.logout();
-    navigate(ROUTE.LOGIN);
-  };
 
   return (
     <AppBars position="sticky">
@@ -33,7 +28,7 @@ const Header = ({ auth, isLogin }) => {
         <Typography component="h1" variant="h5" color="inherit" noWrap sx={{ flexGrow: 1 }}>
           <div>{title[pathname]}</div>
         </Typography>
-        {isLogin() ? (
+        {isLogin ? (
           <Typography onClick={logoutHandler} color="inherit" variant="body2" underline="hover">
             Logout
           </Typography>
