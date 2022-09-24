@@ -1,4 +1,4 @@
-import { createAsyncThunk, createSelector, createSlice } from '@reduxjs/toolkit';
+import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
 import { getAccountsApi } from '../api/api';
 import { createExtraReducers, reducerUtils } from '../common/utils/async.utill';
 import { PAGE_LIMIT } from '../common/utils/constant';
