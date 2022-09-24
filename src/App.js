@@ -14,9 +14,9 @@ import UserDetail from './pages/UserDetail/UserDetail';
 function App({ auth, token }) {
   return (
     <>
-      <Header auth={auth} isLogin={token.getToken} />
+      {token.getToken() && <Header auth={auth} isLogin={token.getToken} />}
       <Box>
-        <Sider />
+        {token.getToken() && <Sider />}
         <Div>
           <Routes>
             <Route path={ROUTE.LOGIN} element={<Login auth={auth} token={token} />} />
