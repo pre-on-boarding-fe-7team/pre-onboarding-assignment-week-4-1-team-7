@@ -53,41 +53,45 @@ const AccountList = () => {
   if (accounts.error || users.error) return <p>에러</p>;
   if (accounts.data && users.data)
     return (
-      <Card>
-        <Box>
-          <Table>
-            <TableHead>
-              <TableRow>
-                {header.map((value, index) => (
-                  <TableCell key={index}>{value}</TableCell>
-                ))}
-              </TableRow>
-            </TableHead>
-            <TableBody>
-              {accounts.data.data.map(account => (
-                <TableRow key={account.uuid}>
-                  <TableCell>{makeGetUserName(users.data)(account.id)}</TableCell>
-                  <TableCell>{getBrokerName(account.broker_id)}</TableCell>
-                  <TableCell onClick={() => handleClickAccountNumber(account.number)}>
-                    {getAccountFormat(account.broker_id, account.number)}
-                  </TableCell>
-                  <TableCell>{getAccountStatus(account.status)}</TableCell>
-                  <TableCell>{account.name}</TableCell>
-                  <TableCell sx={{ textAlign: 'right' }}>
-                    <Earning assets={account.assets} payments={account.payments}>
-                      {getCurrency(account.assets)}
-                    </Earning>
-                  </TableCell>
-                  <TableCell sx={{ textAlign: 'right' }}>{getCurrency(account.payments)}</TableCell>
-                  <TableCell>{boolToIcon(account.is_active)}</TableCell>
-                  <TableCell>{getDateFormat(account.created_at)}</TableCell>
+      <Box sx={{ mt: 3 }}>
+        <Card>
+          <Box>
+            <Table>
+              <TableHead>
+                <TableRow>
+                  {header.map((value, index) => (
+                    <TableCell key={index}>{value}</TableCell>
+                  ))}
                 </TableRow>
-              ))}
-            </TableBody>
-          </Table>
-        </Box>
-        <AccountPagination total={accounts.data.total} />
-      </Card>
+              </TableHead>
+              <TableBody>
+                {accounts.data.data.map(account => (
+                  <TableRow key={account.uuid}>
+                    <TableCell>{makeGetUserName(users.data)(account.id)}</TableCell>
+                    <TableCell>{getBrokerName(account.broker_id)}</TableCell>
+                    <TableCell onClick={() => handleClickAccountNumber(account.number)}>
+                      {getAccountFormat(account.broker_id, account.number)}
+                    </TableCell>
+                    <TableCell>{getAccountStatus(account.status)}</TableCell>
+                    <TableCell>{account.name}</TableCell>
+                    <TableCell sx={{ textAlign: 'right' }}>
+                      <Earning assets={account.assets} payments={account.payments}>
+                        {getCurrency(account.assets)}
+                      </Earning>
+                    </TableCell>
+                    <TableCell sx={{ textAlign: 'right' }}>
+                      {getCurrency(account.payments)}
+                    </TableCell>
+                    <TableCell>{boolToIcon(account.is_active)}</TableCell>
+                    <TableCell>{getDateFormat(account.created_at)}</TableCell>
+                  </TableRow>
+                ))}
+              </TableBody>
+            </Table>
+          </Box>
+          <AccountPagination total={accounts.data.total} />
+        </Card>
+      </Box>
     );
 };
 
