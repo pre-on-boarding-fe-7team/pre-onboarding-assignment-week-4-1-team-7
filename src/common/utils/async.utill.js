@@ -53,7 +53,7 @@ export const UsersReducerUtils = {
     loading: true,
     error: null,
   }),
-  success: (data, total) => ({
+  success: ({ data, total }) => ({
     data,
     total,
     loading: false,
