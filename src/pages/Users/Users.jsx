@@ -16,7 +16,6 @@ const Users = ({ token }) => {
   const query = searchParams.get('query');
 
   const users = useSelector(state => state.users);
-  console.info(users);
 
   useEffect(() => {
     if (!token.getToken()) {
