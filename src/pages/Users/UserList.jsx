@@ -9,9 +9,9 @@ import {
   TableHead,
   Paper,
 } from '@mui/material';
-import findUser from '../../common/utils/findUser';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserSettingThunk } from '../../modules/userSettingSlice';
+// import findUser from '../../common/utils/findUser';
 
 const UserList = ({ users }) => {
   const navigate = useNavigate();
@@ -21,9 +21,9 @@ const UserList = ({ users }) => {
     dispatch(getUserSettingThunk());
   }, [dispatch]);
 
-  const handleClickUserName = (userId, trueFalse) => {
+  const handleClickUserName = userId => {
     const seletUserData = users.filter(users => users.id === userId);
-    navigate(`/users/${userId}`, { state: { seletUserData, trueFalse } });
+    navigate(`/users/${userId}`, { state: { seletUserData } });
   };
 
   if (users && userSetting.data)
@@ -43,19 +43,19 @@ const UserList = ({ users }) => {
               {users.map(value => {
                 if (value.id === 101) return <></>;
 
-                let trueFalse = findUser(value.uuid, userSetting.data);
+                // let trueFalse = findUser(value.uuid, userSetting.data);
                 return (
-                  <TableRow key={value.id}>
+                  <TableRow key={value.uuid}>
                     <TableCell
                       onClick={() => {
-                        handleClickUserName(value.id, trueFalse);
+                        handleClickUserName(value.id);
                       }}
                     >
                       {value.name}
                     </TableCell>
                     <TableCell align="right">{value.email}</TableCell>
-                    <TableCell align="right">{trueFalse.is_active ? '🟢' : '🔴'}</TableCell>
-                    <TableCell align="right">{trueFalse.is_staff ? '🟢' : '🔴'}</TableCell>
+                    {/* <TableCell align="right">{trueFalse.is_active ? '🟢' : '🔴'}</TableCell> */}
+                    {/* <TableCell align="right">{trueFalse.is_staff ? '🟢' : '🔴'}</TableCell> */}
                   </TableRow>
                 );
               })}

@@ -7,7 +7,7 @@ class ApiService {
 
   getHeaders() {
     // const token = this.tokenStorage.getToken();
-    return `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InRlc3RAZ2FtaWwuY29tIiwiaWF0IjoxNjYzOTg2ODgyLCJleHAiOjE2NjM5OTA0ODIsInN1YiI6IjEwMSJ9.-qjp3r2HrRBNeGlHMmrk7GJKALgb7gNR-xDD_9mhy6g`;
+    return `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InF3ZXF3ZTEyQG5hdmVyLmNvbSIsImlhdCI6MTY2NDAxNDIwNCwiZXhwIjoxNjY0MDE3ODA0LCJzdWIiOiIxMDQifQ.V7E_GuDauD0uAVa1--1ayxZAYemmcv2-5RSJTenHcqc`;
     //`Bearer ${token}`
   }
 
@@ -19,6 +19,25 @@ class ApiService {
       params,
     });
     return { data: response.data, total: response.headers['x-total-count'] };
+  }
+
+  async getUserDetailApi(userId) {
+    const response = await axios.get(`/users/${userId}`, {
+      headers: {
+        Authorization: this.getHeaders(),
+      },
+    });
+    return { data: response.data };
+  }
+
+  async getUserAccountsApi(params) {
+    const response = await axios.get(`/accounts`, {
+      headers: {
+        Authorization: this.getHeaders(),
+      },
+      params,
+    });
+    return { data: response.data };
   }
 
   async searchUsersApi(query, page = 1, limit = 10) {
@@ -52,6 +71,19 @@ class ApiService {
       params,
     });
     return { data: response.data, total: response.headers['x-total-count'] };
+  }
+
+  async patchUserDataApi(userValues, userId) {
+    const response = await axios.patch(
+      `/users/${userId}`,
+      { ...userValues },
+      {
+        headers: {
+          Authorization: this.getHeaders(),
+        },
+      }
+    );
+    return response.data;
   }
 }
 

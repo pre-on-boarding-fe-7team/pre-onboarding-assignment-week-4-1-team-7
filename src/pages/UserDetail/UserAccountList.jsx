@@ -1,12 +1,9 @@
-import { TableCell, TableRow } from '@mui/material';
-
-const UserAccountList = ({ userAccouts }) => {
+const UserAccountList = ({ userAccount }) => {
+  console.info(userAccount);
   return (
     <>
-      <TableRow>
-        <TableCell>계좌이름 - {userAccouts.name}</TableCell>
-        <TableCell>계좌 내용</TableCell>
-      </TableRow>
+      <div>계좌이름 - {userAccount.name}</div>
+      <div>계좌 내용</div>
     </>
   );
 };
