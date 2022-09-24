@@ -53,6 +53,11 @@ class ApiService {
     });
     return { data: response.data, total: response.headers['x-total-count'] };
   }
+
+  async getAccountsallApi(id) {
+    const response = await axios.get(`/accounts/${id}`);
+    return response.data;
+  }
 }
 
 export default ApiService;

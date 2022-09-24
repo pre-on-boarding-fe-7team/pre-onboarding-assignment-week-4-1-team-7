@@ -9,6 +9,10 @@ import store from './modules/store';
 import TokenStorage from './common/utils/token';
 import Auth from './common/utils/auth';
 import ApiService from './api/api';
+import { PersistGate } from 'redux-persist/integration/react';
+import { persistStore } from 'redux-persist';
+
+let persistor = persistStore(store);
 
 const tokenStorage = new TokenStorage();
 const auth = new Auth(tokenStorage);
@@ -20,7 +24,9 @@ root.render(
     <CssBaseline />
     <BrowserRouter>
       <Provider store={store}>
-        <App auth={auth} token={tokenStorage} />
+        <PersistGate loading={null} persistor={persistor}>
+          <App auth={auth} token={tokenStorage} />
+        </PersistGate>
       </Provider>
     </BrowserRouter>
   </ThemeProvider>
