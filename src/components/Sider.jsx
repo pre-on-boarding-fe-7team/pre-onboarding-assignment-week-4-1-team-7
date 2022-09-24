@@ -1,19 +1,18 @@
 import ListItemButton from '@mui/material/ListItemButton';
 import ListItemIcon from '@mui/material/ListItemIcon';
 import ListItemText from '@mui/material/ListItemText';
-import DashboardIcon from '@mui/icons-material/Dashboard';
 import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
 import PeopleIcon from '@mui/icons-material/People';
-import BarChartIcon from '@mui/icons-material/BarChart';
-import LayersIcon from '@mui/icons-material/Layers';
 import Drawer from '@mui/material/Drawer';
 import styled from '@emotion/styled';
 import List from '@mui/material/List';
 import Toolbar from '@mui/material/Toolbar';
-import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
 
 import Divider from '@mui/material/Divider';
-import IconButton from '@mui/material/IconButton';
+import AccountBalanceIcon from '@mui/icons-material/AccountBalance';
+import { IconButton } from '@mui/material';
+import { Link } from 'react-router-dom';
+
 const Sider = () => {
   return (
     <SiderBar>
@@ -29,40 +28,23 @@ const Sider = () => {
           >
             <IconButton>
               <AccountBalanceIcon />
-              PREFACE
+              TEAM 7
             </IconButton>
           </Toolbar>
           <Divider />
           <ListItemButton>
             <ListItemIcon>
-              <DashboardIcon />
-            </ListItemIcon>
-            <ListItemText primary="대시보드" />
-          </ListItemButton>
-          <ListItemButton>
-            <ListItemIcon>
               <ShoppingCartIcon />
             </ListItemIcon>
-            <ListItemText primary="계좌목록" />
+            <SideLink to="/accounts">
+              <ListItemText primary="계좌목록" />
+            </SideLink>
           </ListItemButton>
           <ListItemButton>
             <ListItemIcon>
               <PeopleIcon />
             </ListItemIcon>
             <ListItemText primary="사용자" />
-          </ListItemButton>
-          <ListItemButton>
-            <ListItemIcon>
-              <BarChartIcon />
-            </ListItemIcon>
-            <ListItemText primary="로그아웃" />
-          </ListItemButton>
-          <Divider />
-          <ListItemButton>
-            <ListItemIcon>
-              <LayersIcon />
-            </ListItemIcon>
-            <ListItemText primary="Integrations" />
           </ListItemButton>
 
           <Divider sx={{ my: 1 }} />
@@ -75,3 +57,9 @@ const Sider = () => {
 export default Sider;
 
 const SiderBar = styled.div``;
+
+const SideLink = styled(Link)(({ theme }) => ({
+  color: 'black',
+  textDecoration: 'none',
+  outline: 'none',
+}));
