@@ -9,10 +9,18 @@ import Toolbar from '@mui/material/Toolbar';
 import AppBar from '@mui/material/AppBar';
 import AccountCircle from '@mui/icons-material/AccountCircle';
 import Link from '@mui/material/Link';
+import { useLocation } from 'react-router-dom';
+
+const title = {
+  accounts: '계좌 목록',
+  users: '사용자 목록',
+};
 
 const Header = () => {
   const dispatch = useDispatch();
   const accounts = useSelector(state => state.accounts);
+  const location = useLocation();
+  const pathname = location.pathname.replace('/', '');
 
   useEffect(() => {
     dispatch(getUsersFetch());
@@ -27,7 +35,7 @@ const Header = () => {
         }}
       >
         <Typography component="h1" variant="h5" color="inherit" noWrap sx={{ flexGrow: 1 }}>
-          <div> Dashboard</div>
+          <div>{title[pathname]}</div>
         </Typography>
         {accounts.data !== null ? (
           <IconButton
