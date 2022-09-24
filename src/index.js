@@ -6,23 +6,14 @@ import theme from './styles/theme';
 import { BrowserRouter } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from './modules/store';
-import TokenStorage from './common/utils/token';
-import Auth from './common/utils/auth';
-import ApiService from './api/api';
-import { GlobalStyle } from './styles/global-styles';
-
-const tokenStorage = new TokenStorage();
-const auth = new Auth(tokenStorage);
-export const apiservice = new ApiService(tokenStorage);
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
   <ThemeProvider theme={theme}>
-    <GlobalStyle />
     <CssBaseline />
     <BrowserRouter>
       <Provider store={store}>
-        <App auth={auth} token={tokenStorage} />
+        <App />
       </Provider>
     </BrowserRouter>
   </ThemeProvider>
