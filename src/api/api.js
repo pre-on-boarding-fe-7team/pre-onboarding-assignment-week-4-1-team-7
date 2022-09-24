@@ -7,7 +7,7 @@ class ApiService {
 
   getHeaders() {
     const token = this.tokenStorage.getToken();
-    // return `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6Imt5eUBuYXZlci5jb20iLCJpYXQiOjE2NjQwMjMwNTEsImV4cCI6MTY2NDAyNjY1MSwic3ViIjoiMTAxIn0.XRg3N_3zN7uqCTP5jbo2Av12BrYt8SmRS40XaSYr1Kw`;
+    // return `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InF3ZXF3ZTEyQG5hdmVyLmNvbSIsImlhdCI6MTY2NDAyNzI4NCwiZXhwIjoxNjY0MDMwODg0LCJzdWIiOiIxMDQifQ.hinWIpVNQywA3gUVgyODTKuhloWrALDs-cdATuj7df0`;
     return `Bearer ${token}`;
   }
 
