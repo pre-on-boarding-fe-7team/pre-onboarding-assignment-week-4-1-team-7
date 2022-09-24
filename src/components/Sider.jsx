@@ -8,16 +8,25 @@ import Drawer from '@mui/material/Drawer';
 import styled from '@emotion/styled';
 import List from '@mui/material/List';
 
+const isAccount = pathName => {
+  if (pathName === `accounts` || pathName === 'account') return 'active_nav';
+  else return '';
+};
+
+const isUser = pathName => {
+  if (pathName === `users` || pathName === 'user') return 'active_nav';
+  else return '';
+};
+
 const Sider = () => {
-  const pathName = useLocation().pathname;
-  const pathRoute = pathName.split('/')[1];
+  const pathName = useLocation().pathname.replace('/', '').split('/')[0];
 
   return (
     <SiderBar>
       <StyledDrawer variant="permanent">
         <List component="nav">
           <SideLink to="/accounts">
-            <ListBtn className={`${pathRoute === `accounts` ? 'active_nav' : ''}`}>
+            <ListBtn className={isAccount(pathName)}>
               <ListItemIcon>
                 <ShoppingCartIcon />
               </ListItemIcon>
@@ -25,7 +34,7 @@ const Sider = () => {
             </ListBtn>
           </SideLink>
           <SideLink to="/users">
-            <ListBtn className={`${pathRoute === `users` ? 'active_nav' : ''}`}>
+            <ListBtn className={isUser(pathName)}>
               <ListItemIcon>
                 <PeopleIcon />
               </ListItemIcon>
