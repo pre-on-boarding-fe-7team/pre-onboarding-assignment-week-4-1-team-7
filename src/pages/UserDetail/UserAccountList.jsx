@@ -1,5 +1,4 @@
 const UserAccountList = ({ userAccount }) => {
-  // console.info(userAccount);
   return (
     <>
       <div>계좌이름 - {userAccount.name}</div>

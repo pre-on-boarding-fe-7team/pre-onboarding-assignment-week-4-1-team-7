@@ -6,7 +6,10 @@ export const getStatus = () => data.accountStatus;
 
 export const boolToIcon = flag => flag && <CheckIcon />;
 
-export const makeGetUserName = users => id => users.find(user => user.id === id).name;
+export const makeGetUserName = users => id => {
+  const target = users.find(user => user.id === id);
+  return target ? target.name : '';
+};
 
 export const jsonToArray = json => Object.entries(json).map(([key, value]) => ({ key, value }));
 

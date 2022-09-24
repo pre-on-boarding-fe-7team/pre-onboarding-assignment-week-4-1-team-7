@@ -16,6 +16,7 @@ const Users = ({ token }) => {
   const query = searchParams.get('query');
 
   const users = useSelector(state => state.users);
+
   useEffect(() => {
     if (!token.getToken()) {
       navigate(ROUTE.LOGIN);

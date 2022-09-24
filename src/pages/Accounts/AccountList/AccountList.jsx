@@ -28,6 +28,10 @@ const AccountList = () => {
   const users = useSelector(state => state.users);
   const [{ _page, q, broker_id, is_active, status }] = useQeuryStringParams();
   const navigate = useNavigate();
+  const handleClickUserName = (userId, trueFalse) => {
+    const seletUserData = users.data.filter(users => users.id === userId);
+    navigate(`/users/${userId}`, { state: { seletUserData, trueFalse } });
+  };
 
   // accounts.id가 고유하지 않아서 accounts.uuid로 대체
   const accountClickHandler = uuid => {
@@ -71,9 +75,20 @@ const AccountList = () => {
                   } = convertAccountInfo(makeGetUserName(users.data.data), account);
                   return (
                     <TableRow key={account.uuid}>
-                      <TableCell>{user_name}</TableCell>
+                      <TableCell
+                        onClick={() =>
+                          // 두번째 파라미터는 데이터가 존재한다는 가정하에 구현
+                          handleClickUserName(account.user_id, { is_active: true, is_staff: false })
+                        }
+                        sx={{ cursor: 'pointer' }}
+                      >
+                        {user_name}
+                      </TableCell>
                       <TableCell>{broker_name}</TableCell>
-                      <TableCell onClick={() => accountClickHandler(account.uuid)}>
+                      <TableCell
+                        onClick={() => accountClickHandler(account.uuid)}
+                        sx={{ cursor: 'pointer' }}
+                      >
                         {account_number}
                       </TableCell>
                       <TableCell>{account_status}</TableCell>

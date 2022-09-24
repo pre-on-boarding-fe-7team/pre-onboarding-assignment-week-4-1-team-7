@@ -19,7 +19,6 @@ const UserForm = ({ userData, userId }) => {
 
   const handleClickUserPatch = () => {
     setIsform(!isform);
-    console.info(userValues);
     apiservice.patchUserDataApi(userValues, userId);
   };
   return (

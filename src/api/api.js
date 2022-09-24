@@ -46,7 +46,7 @@ class ApiService {
       },
       params,
     });
-    console.info('@@', response.headers['x-total-count']);
+    // console.info('@@', response.headers['x-total-count']);
     return { data: response.data, total: response.headers['x-total-count'] };
   }
 
