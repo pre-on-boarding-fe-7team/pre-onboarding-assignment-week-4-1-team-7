@@ -80,11 +80,15 @@ const AccountList = () => {
                           // 두번째 파라미터는 데이터가 존재한다는 가정하에 구현
                           handleClickUserName(account.user_id, { is_active: true, is_staff: false })
                         }
+                        sx={{ cursor: 'pointer' }}
                       >
                         {user_name}
                       </TableCell>
                       <TableCell>{broker_name}</TableCell>
-                      <TableCell onClick={() => accountClickHandler(account.uuid)}>
+                      <TableCell
+                        onClick={() => accountClickHandler(account.uuid)}
+                        sx={{ cursor: 'pointer' }}
+                      >
                         {account_number}
                       </TableCell>
                       <TableCell>{account_status}</TableCell>
