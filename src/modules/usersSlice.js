@@ -7,6 +7,10 @@ export const getUsersThunk = createAsyncThunk(
   'usersSlice/getUsersThunk',
   async (page, limit) => await apiservice.getUsersApi({ _page: page, _limit: limit })
 );
+export const getAllUsersThunk = createAsyncThunk(
+  'usersSlice/getAllUsersThunk',
+  async params => await apiservice.getUsersApi(params)
+);
 
 export const searchUsersThunk = createAsyncThunk(
   'usersSlice/searchUsersThunk',
@@ -39,6 +43,18 @@ const usersSlice = createSlice({
       state.total = action.payload.total;
     },
     [searchUsersThunk.rejected]: (state, action) => {
+      state.loading = false;
+      state.error = action.error;
+    },
+    [getAllUsersThunk.pending]: (state, action) => {
+      state.loading = true;
+    },
+    [getAllUsersThunk.fulfilled]: (state, action) => {
+      state.loading = false;
+      state.data = action.payload.data;
+      state.total = action.payload.total;
+    },
+    [getAllUsersThunk.rejected]: (state, action) => {
       state.loading = false;
       state.error = action.error;
     },

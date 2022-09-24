@@ -5,7 +5,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { useEffect } from 'react';
 import { fetchAccounts } from '../../../modules/accountsSlice';
 import AccountPagination from '../AccountPagination';
-import { getUsersThunk } from '../../../modules/usersSlice';
+import { getAllUsersThunk } from '../../../modules/usersSlice';
 import Earning from '../../../components/Earning/Earning';
 import useQeuryStringParams from '../../../common/hooks/useQeuryStringParams';
 import { useNavigate } from 'react-router-dom';
@@ -35,7 +35,7 @@ const AccountList = () => {
   };
 
   useEffect(() => {
-    dispatch(getUsersThunk());
+    dispatch(getAllUsersThunk());
   }, [dispatch]);
 
   useEffect(() => {
