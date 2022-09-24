@@ -107,6 +107,16 @@ class ApiService {
     );
     return response.data;
   }
+
+  async deleteUser(id) {
+    const response = await axios.delete(`/users/${id}`, {
+      method: 'DELETE',
+      headers: {
+        Authorization: this.getHeaders(),
+      },
+    });
+    return response.data;
+  }
 }
 
 export default ApiService;
