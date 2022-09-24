@@ -13,7 +13,6 @@ export const searchUsersThunk = createAsyncThunk(
   async (query, page, limit) =>
     await apiservice.searchUsersApi({ q: query, _page: page, _limit: limit })
 );
-
 //slice
 const usersSlice = createSlice({
   name: 'users',

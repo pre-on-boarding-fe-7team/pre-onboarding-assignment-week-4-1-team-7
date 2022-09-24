@@ -8,11 +8,19 @@ const fetchAccounts = createAsyncThunk(
   async params => await apiservice.getAccountsApi({ _page: 1, _limit: PAGE_LIMIT, ...params })
 );
 
+const getUserAccountThunk = createAsyncThunk(
+  'accountsSlice/fetchAccountsByUser',
+  async userId => await apiservice.getAccountsApi({ user_id: userId })
+);
+
 const accountsSlice = createSlice({
   name: 'accounts',
   initialState: reducerUtils.initial(),
-  extraReducers: createExtraReducers(fetchAccounts),
+  extraReducers: builder => {
+    createExtraReducers(fetchAccounts)(builder);
+    createExtraReducers(getUserAccountThunk)(builder);
+  },
 });
 
-export { fetchAccounts };
+export { fetchAccounts, getUserAccountThunk };
 export default accountsSlice.reducer;
