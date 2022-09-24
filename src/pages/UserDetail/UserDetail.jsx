@@ -15,6 +15,7 @@ import { patchUserDataApi } from '../../api/api';
 import useInputs from '../../hooks/useInputs';
 import { getAccountsThunk } from '../../modules/accountsSlice';
 import UserAccountList from './UserAccountList';
+
 const UserDetail = () => {
   const location = useLocation();
   const dispatch = useDispatch();

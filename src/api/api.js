@@ -46,6 +46,15 @@ class ApiService {
     });
     return response.data;
   }
+
+  async getAccountsApi() {
+    const response = await axios.get(`/accounts`, {
+      headers: {
+        Authorization: this.getHeaders(),
+      },
+    });
+    return response.data;
+  }
 }
 
 export default ApiService;

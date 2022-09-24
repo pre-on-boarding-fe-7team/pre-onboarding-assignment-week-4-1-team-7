@@ -1,27 +1,9 @@
-// import React, { useState } from 'react';
 import Grid from '@mui/material/Unstable_Grid2';
 import Stack from '@mui/material/Stack';
 import Button from '@mui/material/Button';
 import { Container, Item } from './Main.style';
-// import { useDispatch, useSelector } from 'react-redux';
-// import { getUserSettingFetch } from '../../modules/userSettingSlice';
-// import { useEffect } from 'react';
 
-// 이 페이지 처음에 들어왔을 때 localstorage에 토큰 있으면 자동으로 로그인 후 보이는 페이지로 연동되게끔.
 function Main() {
-  // const dispatch = useDispatch();
-  // const setting = useSelector(state => {
-  //   return state.setting.setting;
-  // });
-  // const status = useSelector(state => {
-  //   return state.setting.status;
-  // });
-  // useEffect(() => {
-  //   dispatch(getUserSettingFetch());
-  // }, [dispatch]);
-
-  //에러처리 하기
-  // if (status && !setting) return <div>{status}</div>;
   return (
     <Container maxWidth={'1000px'} sx={{ flexGrow: 1 }}>
       <Grid container spacing={2}>

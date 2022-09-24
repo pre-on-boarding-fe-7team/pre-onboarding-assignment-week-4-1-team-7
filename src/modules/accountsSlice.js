@@ -1,11 +1,11 @@
 import { createAsyncThunk, createSlice } from '@reduxjs/toolkit';
-import { getAccountsApi } from '../api/api';
+import { apiservice } from '..';
 import { reducerUtils } from '../common/utils/asyncUtils';
 
 //action Fn
 export const getAccountsThunk = createAsyncThunk(
   'accountsSlice/getAccountsThunk',
-  async () => await getAccountsApi()
+  async () => await apiservice.getAccountsApi()
 );
 
 //slice

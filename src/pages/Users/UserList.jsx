@@ -1,6 +1,14 @@
 import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { Table, TableBody, TableRow, TableCell } from '@mui/material';
+import {
+  Table,
+  TableBody,
+  TableRow,
+  TableCell,
+  TableContainer,
+  TableHead,
+  Paper,
+} from '@mui/material';
 import findUser from '../../common/utils/findUser';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserSettingThunk } from '../../modules/userSettingSlice';
@@ -21,28 +29,39 @@ const UserList = ({ users }) => {
   if (users && userSetting.data)
     return (
       <>
-        <Table>
-          <TableBody>
-            {users.map(value => {
-              if (value.id === 101) return <></>;
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 650 }} aria-label="simple table">
+            <TableHead>
+              <TableRow>
+                <TableCell>이름</TableCell>
+                <TableCell align="right">이메일</TableCell>
+                <TableCell align="right">활성화 여부</TableCell>
+                <TableCell align="right">임직원 계좌 여부</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              {users.map(value => {
+                if (value.id === 101) return <></>;
 
-              let trueFalse = findUser(value.uuid, userSetting.data);
-              return (
-                <TableRow key={value.id}>
-                  <TableCell
-                    onClick={() => {
-                      handleClickUserName(value.id, trueFalse);
-                    }}
-                  >
-                    {value.name}
-                  </TableCell>
-                  <TableCell align="right">{trueFalse.is_active ? '🟢' : '🔴'}</TableCell>
-                  <TableCell align="right">{trueFalse.is_staff ? '🟢' : '🔴'}</TableCell>
-                </TableRow>
-              );
-            })}
-          </TableBody>
-        </Table>
+                let trueFalse = findUser(value.uuid, userSetting.data);
+                return (
+                  <TableRow key={value.id}>
+                    <TableCell
+                      onClick={() => {
+                        handleClickUserName(value.id, trueFalse);
+                      }}
+                    >
+                      {value.name}
+                    </TableCell>
+                    <TableCell align="right">{value.email}</TableCell>
+                    <TableCell align="right">{trueFalse.is_active ? '🟢' : '🔴'}</TableCell>
+                    <TableCell align="right">{trueFalse.is_staff ? '🟢' : '🔴'}</TableCell>
+                  </TableRow>
+                );
+              })}
+            </TableBody>
+          </Table>
+        </TableContainer>
       </>
     );
 };

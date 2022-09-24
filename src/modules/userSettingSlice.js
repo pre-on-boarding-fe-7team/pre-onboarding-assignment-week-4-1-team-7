@@ -1,10 +1,10 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
-import { getSettingApi } from '../api/api';
+import { apiservice } from '..';
 import { reducerUtils } from '../common/utils/asyncUtils';
 
 export const getUserSettingThunk = createAsyncThunk(
   'userSettingSlice/getUsersSettingThunk',
-  async () => await getSettingApi()
+  async () => await apiservice.getSettingApi()
 );
 
 const userSettingSlice = createSlice({

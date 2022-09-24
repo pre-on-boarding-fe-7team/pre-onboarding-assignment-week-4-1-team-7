@@ -1,8 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { getUsersFetch, searchUsersFetch } from '../../modules/userSlice';
-import UserTable from './UserTable';
+import { getUsersThunk, searchUsersThunk } from '../../modules/usersSlice';
+import UserList from './UserList';
 
 const Users = ({ token }) => {
   const navigate = useNavigate();
@@ -14,15 +14,7 @@ const Users = ({ token }) => {
   limit = 10;
   const query = searchParams.get('query');
 
-  const users = useSelector(state => {
-    return state.users.users;
-  });
-  const status = useSelector(state => {
-    return state.users.status;
-  });
-  const total = useSelector(state => {
-    return state.users.total;
-  });
+  const users = useSelector(state => state.users);
 
   useEffect(() => {
     if (!token.getToken()) {
@@ -33,12 +25,12 @@ const Users = ({ token }) => {
   useEffect(() => {
     const firstPage = page === null ? 1 : page;
     setSearchParams({ page: firstPage, limit });
-    dispatch(getUsersFetch(page, limit));
+    dispatch(getUsersThunk(page, limit));
   }, [dispatch, setSearchParams, page, limit]);
 
   // const [page, setPage] = useState([]);
   const pageNumbers = [];
-  for (let i = 1; i <= Math.ceil((total - 1) / 10); i++) {
+  for (let i = 1; i <= Math.ceil((users.total - 1) / 10); i++) {
     pageNumbers.push(i);
   }
 
@@ -48,9 +40,9 @@ const Users = ({ token }) => {
     const clickPage = page === null ? 1 : parseInt(p);
     setSearchParams({ page: clickPage, limit }); //조건안으로?
     if (inputRef.current.value === '') {
-      return dispatch(getUsersFetch(p, limit));
+      return dispatch(getUsersThunk(p, limit));
     }
-    dispatch(searchUsersFetch(inputRef.current.value, p, 10));
+    dispatch(searchUsersThunk(inputRef.current.value, p, 10));
   };
 
   //검색
@@ -59,30 +51,33 @@ const Users = ({ token }) => {
     event.preventDefault();
     const search = inputRef.current.value;
     if (search === '') return;
-    dispatch(searchUsersFetch(search)); //첫검색때는 검색어만 보낸다
+    dispatch(searchUsersThunk(search)); //첫검색때는 검색어만 보낸다
     //setSearchParams-> 1페이지, 리밋재설정
     setSearchParams({ page: 1, limit: 10, query: search !== '' ? search : query });
   };
 
-  if (status && !users) return <div>{status}</div>;
-  return (
-    <>
-      <form onSubmit={handleSearch}>
-        <input ref={inputRef} type="text" placeholder="Search..." />
-        <button>검색</button>
-      </form>
+  if (users.loading) {
+    <>loading...</>;
+  }
+  if (users.data)
+    return (
+      <>
+        <form onSubmit={handleSearch}>
+          <input ref={inputRef} type="text" placeholder="Search..." />
+          <button>검색</button>
+        </form>
 
-      <div>라라라</div>
-      <UserTable users={users} />
-      <ul>
-        {pageNumbers.map((p, i) => (
-          <button onClick={() => handlePage(p)} key={i}>
-            {p}
-          </button>
-        ))}
-      </ul>
-    </>
-  );
+        <div>라라라</div>
+        <UserList users={users.data} />
+        <ul>
+          {pageNumbers.map((p, i) => (
+            <button onClick={() => handlePage(p)} key={i}>
+              {p}
+            </button>
+          ))}
+        </ul>
+      </>
+    );
 };
 
 export default Users;
