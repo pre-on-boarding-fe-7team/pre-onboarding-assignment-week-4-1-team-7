@@ -1,7 +1,6 @@
 import { Route, Routes } from 'react-router-dom';
 import { ROUTE } from './common/utils/constant';
 import Login from './pages/Login/Login';
-import Main from './pages/Main/Main';
 import NotFound from './pages/NotFound/NotFound';
 import Users from './pages/Users/Users';
 import Accounts from './pages/Accounts/Accounts';
@@ -15,12 +14,11 @@ import UserDetail from './pages/UserDetail/UserDetail';
 function App({ auth, token }) {
   return (
     <>
-      <Header logout={auth.logout} isLogin={token.getToken} />
+      <Header auth={auth} isLogin={token.getToken} />
       <Box>
         <Sider />
         <Div>
           <Routes>
-            <Route path={ROUTE.MAIN} element={<Main />} />
             <Route path={ROUTE.LOGIN} element={<Login auth={auth} token={token} />} />
             <Route path={ROUTE.USERS} element={<Users token={token} />} />
             <Route path={ROUTE.USERS_DETAIL} element={<UserDetail token={token} />} />

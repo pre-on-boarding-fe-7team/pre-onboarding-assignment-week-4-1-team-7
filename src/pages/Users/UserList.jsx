@@ -9,11 +9,11 @@ import {
   TableHead,
   Paper,
 } from '@mui/material';
-import findUser from '../../common/utils/findUser';
 import { useDispatch, useSelector } from 'react-redux';
 import { getUserSettingThunk } from '../../modules/userSettingSlice';
 import { maskingName, maskingPhone } from '../../common/utils/masking';
 import DeleteForeverIcon from '@mui/icons-material/DeleteForever';
+import { findUser } from '../../common/utils/field.util';
 
 const UserList = ({ users, handleClickDelete }) => {
   const navigate = useNavigate();

@@ -13,7 +13,7 @@ const title = {
   user: '사용자 정보',
 };
 
-const Header = ({ logout, isLogin }) => {
+const Header = ({ auth, isLogin }) => {
   const location = useLocation();
   const pathname = location.pathname.replace('/', '').split('/')[0];
 
@@ -28,11 +28,16 @@ const Header = ({ logout, isLogin }) => {
           <div>{title[pathname]}</div>
         </Typography>
         {isLogin() ? (
-          <Typography onClick={logout} color="inherit" variant="body2" underline="hover">
+          <Typography
+            onClick={() => auth.logout()}
+            color="inherit"
+            variant="body2"
+            underline="hover"
+          >
             Logout
           </Typography>
         ) : (
-          <Link href="/login" color="inherit" variant="body2" underline="hover">
+          <Link href="/" color="inherit" variant="body2" underline="hover">
             Login
           </Link>
         )}

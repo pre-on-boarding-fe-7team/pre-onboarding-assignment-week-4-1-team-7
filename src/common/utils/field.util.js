@@ -12,8 +12,11 @@ export const jsonToArray = json => Object.entries(json).map(([key, value]) => ({
 
 export const getBrokerName = id => (id ? getBrokers()[id] : '');
 
-export const getAccountStatus = accountStatus =>
-  accountStatus ? jsonToArray(getStatus()).find(status => status.value === accountStatus).key : '';
+export const getAccountStatus = accountStatus => {
+  if (!accountStatus) return '';
+  const toNumberaccountStatus = Number.parseInt(accountStatus);
+  return jsonToArray(getStatus()).find(status => status.value === toNumberaccountStatus).key;
+};
 
 export const getAccountFormat = (brokerId, number) => {
   if (!brokerId || !number) return;
@@ -68,3 +71,12 @@ export const convertAccountInfo = (
   account_created_at: getDateFormat(created_at),
   account_updated_at: getDateFormat(updated_at),
 });
+
+export const findUser = (uuid, userSetting) => {
+  const found = userSetting.find(element => uuid === element.uuid); //요소값리턴
+  // console.info(found.is_active);
+  return {
+    is_active: found.is_active,
+    is_staff: found.is_staff,
+  };
+};

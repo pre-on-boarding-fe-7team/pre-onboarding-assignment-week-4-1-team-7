@@ -18,7 +18,7 @@ const Users = ({ token }) => {
 
   useEffect(() => {
     if (!token.getToken()) {
-      navigate('/login');
+      navigate('/');
     }
   });
 
