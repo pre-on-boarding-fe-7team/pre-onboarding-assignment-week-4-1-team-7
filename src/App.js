@@ -23,7 +23,7 @@ function App({ auth, token }) {
 
   useEffect(() => {
     setIsLogin(token.getToken());
-  }, [token.getToken()]);
+  }, [token]);
 
   return (
     <>
