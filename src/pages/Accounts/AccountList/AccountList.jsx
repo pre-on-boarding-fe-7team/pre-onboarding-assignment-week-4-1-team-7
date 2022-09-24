@@ -68,7 +68,7 @@ const AccountList = () => {
                     account_payments,
                     account_active,
                     account_created_at,
-                  } = convertAccountInfo(makeGetUserName(users.data), account);
+                  } = convertAccountInfo(makeGetUserName(users.data.data), account);
                   return (
                     <TableRow key={account.uuid}>
                       <TableCell>{user_name}</TableCell>
