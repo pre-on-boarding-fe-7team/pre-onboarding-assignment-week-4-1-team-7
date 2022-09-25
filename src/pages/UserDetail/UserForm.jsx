@@ -93,7 +93,7 @@ const UserForm = ({ userData, userId }) => {
                 <TableCell style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}>나이</TableCell>
                 <TableCell>{userData.age}</TableCell>
                 <TableCell style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}>생일</TableCell>
-                <TableCell>{userData.birth_date}</TableCell>
+                <TableCell>{userData.birth_date.split('T')[0]}</TableCell>
               </TableRow>
               <TableRow>
                 <TableCell style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}>Email</TableCell>
