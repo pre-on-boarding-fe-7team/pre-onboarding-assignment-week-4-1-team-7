@@ -55,13 +55,13 @@ const UserForm = ({ userData, userId }) => {
       </Box>
       <Card>
         <TableContainer component={Paper}>
-          <Table sx={{ minWidth: 1000 }} aria-label="simple table">
+          <Table sx={{ mt: 2 }} aria-label="simple table">
             <TableHead>
               <TableRow>
                 <TableCell style={{ width: 150 }}>
                   {' '}
-                  <Typography style={{ margin: '18px' }} color="textPrimary" variant="body1">
-                    개인정보
+                  <Typography sx={{ mb: 2 }} color="textPrimary" variant="body1">
+                    개인 정보
                   </Typography>
                 </TableCell>
               </TableRow>
@@ -71,9 +71,7 @@ const UserForm = ({ userData, userId }) => {
                 {isform ? (
                   <>
                     {' '}
-                    <TableCell style={{ width: 30, backgroundColor: 'rgba(0,0,0,0.1)' }}>
-                      나이
-                    </TableCell>
+                    <TableCell style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}>나이</TableCell>
                     <TableCell>
                       <Input
                         size="small"
@@ -88,23 +86,27 @@ const UserForm = ({ userData, userId }) => {
                   </>
                 ) : (
                   <>
-                    <TableCell style={{ width: 30, backgroundColor: 'rgba(0,0,0,0.1)' }}>
-                      나이
-                    </TableCell>
+                    <TableCell style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}>이름</TableCell>
                     <TableCell>{name ? name : userData.name}</TableCell>
                   </>
                 )}
+                <TableCell style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}>나이</TableCell>
                 <TableCell>{userData.age}</TableCell>
-                <TableCell>{userData.birth_date}</TableCell>
-                <TableCell>{userData.birth_date}</TableCell>
+                <TableCell style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}>생일</TableCell>
                 <TableCell>{userData.birth_date}</TableCell>
               </TableRow>
               <TableRow>
+                <TableCell style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}>Email</TableCell>
                 <TableCell>{userData.email}</TableCell>
+                <TableCell style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}>Phone</TableCell>
                 <TableCell>{userData.phone_number}</TableCell>
+                <TableCell style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}>성별</TableCell>
                 <TableCell>{userData.gender_origin}</TableCell>
+              </TableRow>
+              <TableRow>
+                <TableCell style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}>주소</TableCell>
                 <TableCell>{userData.address}</TableCell>
-                <TableCell>{userData.address}</TableCell>
+                <TableCell style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}>상세 주소</TableCell>
                 <TableCell>{userData.detail_address}</TableCell>
               </TableRow>
             </TableBody>
