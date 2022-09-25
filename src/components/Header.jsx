@@ -12,7 +12,7 @@ const title = {
   user: '사용자 정보',
 };
 
-const Header = ({ email, logoutHandler, isLogin }) => {
+const Header = ({ email, logoutHandler }) => {
   const location = useLocation();
   const pathname = location.pathname.replace('/', '').split('/')[0];
 

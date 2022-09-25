@@ -10,26 +10,17 @@ import Footer from './components/Footer';
 import { Box, Div } from './App.style';
 import AccountDetail from './pages/AccountsDetail/AccountDetail';
 import UserDetail from './pages/UserDetail/UserDetail';
-import { useEffect, useState } from 'react';
 
 function App({ auth, token }) {
   const navigate = useNavigate();
-  const [isLogin, setIsLogin] = useState(false);
   const logoutHandler = () => {
     auth.logout();
-    setIsLogin(false);
     navigate(ROUTE.LOGIN);
   };
 
-  useEffect(() => {
-    setIsLogin(token.getToken());
-  }, [token]);
-
   return (
     <>
-      {auth.isLogin() && (
-        <Header email={auth.email} logoutHandler={logoutHandler} isLogin={isLogin} />
-      )}
+      {auth.isLogin() && <Header email={auth.email} logoutHandler={logoutHandler} />}
       <Box>
         {auth.isLogin() && <Sider />}
         <Div>
