@@ -43,9 +43,11 @@ const UserDetail = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <Typography style={{ margin: '20px' }} color="textPrimary" variant="h5">
-                    계좌 목록
-                  </Typography>
+                  <TableCell style={{ width: 150 }}>
+                    <Typography style={{ margin: '20px' }} color="textPrimary" variant="body1">
+                      계좌 목록
+                    </Typography>
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>

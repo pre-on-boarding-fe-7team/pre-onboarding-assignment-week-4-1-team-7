@@ -20,7 +20,6 @@ const UserForm = ({ userData, userId }) => {
   const [isform, setIsform] = useState(false);
   const [userValues, onChangeValues] = useInputs({ name: userData.name });
   const { name } = userValues;
-  console.info(userData);
   const handleClickUserPatch = () => {
     setIsform(!isform);
     apiservice.patchUserDataApi(userValues, userId);
@@ -59,11 +58,12 @@ const UserForm = ({ userData, userId }) => {
           <Table sx={{ minWidth: 1000 }} aria-label="simple table">
             <TableHead>
               <TableRow>
-                {/* <TableCell> */}{' '}
-                <Typography style={{ margin: '18px' }} color="textPrimary" variant="h5">
-                  개인정보
-                </Typography>
-                {/* </TableCell> */}
+                <TableCell style={{ width: 150 }}>
+                  {' '}
+                  <Typography style={{ margin: '18px' }} color="textPrimary" variant="body1">
+                    개인정보
+                  </Typography>
+                </TableCell>
               </TableRow>
             </TableHead>
             <TableBody>
@@ -81,7 +81,6 @@ const UserForm = ({ userData, userId }) => {
                         name="name"
                         value={name}
                         onChange={onChangeValues}
-                        minRows
                         required
                         autoFocus
                       />{' '}
