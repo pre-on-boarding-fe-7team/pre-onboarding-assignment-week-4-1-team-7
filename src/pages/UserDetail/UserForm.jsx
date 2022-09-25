@@ -71,7 +71,7 @@ const UserForm = ({ userData, userId }) => {
                 {isform ? (
                   <>
                     {' '}
-                    <TableCell style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}>나이</TableCell>
+                    <TableCell style={{ backgroundColor: 'rgba(0,0,0,0.1)' }}>이름</TableCell>
                     <TableCell>
                       <Input
                         size="small"
