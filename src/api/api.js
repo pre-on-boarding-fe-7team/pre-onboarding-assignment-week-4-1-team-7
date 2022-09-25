@@ -6,7 +6,7 @@ class ApiService {
   }
 
   getHeaders() {
-    const token = this.tokenStorage.getToken(); // return `Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6InF3ZXF3ZTEyQG5hdmVyLmNvbSIsImlhdCI6MTY2NDAyNzI4NCwiZXhwIjoxNjY0MDMwODg0LCJzdWIiOiIxMDQifQ.hinWIpVNQywA3gUVgyODTKuhloWrALDs-cdATuj7df0`;
+    const token = this.tokenStorage.getToken();
     return `Bearer ${token}`;
   }
 
