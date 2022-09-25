@@ -1,4 +1,13 @@
-import { Box, Card, Table, TableBody, TableCell, TableHead, TableRow } from '@mui/material';
+import {
+  Box,
+  Card,
+  Table,
+  TableBody,
+  TableCell,
+  TableHead,
+  TableRow,
+  Typography,
+} from '@mui/material';
 import { Container } from '@mui/system';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
@@ -35,7 +44,11 @@ const UserDetail = () => {
             <Table>
               <TableHead>
                 <TableRow>
-                  <TableCell>계좌 목록</TableCell>
+                  <TableCell style={{ width: 150 }}>
+                    <Typography style={{ margin: '20px' }} color="textPrimary" variant="body1">
+                      계좌 목록
+                    </Typography>
+                  </TableCell>
                 </TableRow>
               </TableHead>
               <TableBody>
