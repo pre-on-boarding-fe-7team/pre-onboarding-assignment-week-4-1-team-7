@@ -58,6 +58,7 @@ const UserList = ({ users, handleClickDelete }) => {
                       onClick={() => {
                         handleClickUserName(value.id, trueFalse);
                       }}
+                      style={{ cursor: 'pointer' }}
                     >
                       {maskingName(value.name)}
                     </TableCell>
