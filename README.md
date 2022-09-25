@@ -35,7 +35,7 @@
 ## 실행 방법
 
 ```
-$ git clone https://github.com/pre-on-boarding-fe-7team/https://github.com/pre-on-boarding-fe-7team/pre-onboarding-assignment-week-4-1-team-7.git
+$ git clone https://github.com/pre-on-boarding-fe-7team/pre-onboarding-assignment-week-4-1-team-7.git
 ```
 
 ```
